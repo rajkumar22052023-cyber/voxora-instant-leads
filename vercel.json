@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://voxora-instant-leads-api.vercel.app/api/:path*"
+    },
+    {
+      "source": "/instant-lead/:path*",
+      "destination": "https://voxora-instant-leads-api.vercel.app/instant-lead/:path*"
+    }
+  ]
+}

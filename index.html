@@ -1,0 +1,3072 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voxora AI — Instant Lead Admin CRM</title>
+  
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            voxora: {
+              950: '#06050a',
+              900: '#0b0813',
+              850: '#100c1c',
+              800: '#161026',
+              750: '#1d1533',
+              700: '#251b40',
+              border: '#2e224d',
+              'border-bright': '#4f3684',
+              purple: '#8b5cf6',
+              'purple-hover': '#7c3aed',
+              'purple-glow': '#a78bfa',
+              accent: '#9333ea',
+              card: '#120d20',
+              sidebar: '#0a0712',
+            }
+          },
+          boxShadow: {
+            'glow-sm': '0 0 15px -3px rgba(139, 92, 246, 0.25)',
+            'glow-md': '0 0 25px -4px rgba(139, 92, 246, 0.35)',
+            'glow-btn': '0 0 20px rgba(147, 51, 234, 0.45)',
+            'glow-badge': '0 0 10px rgba(16, 185, 129, 0.2)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom dark scrollbar matching Voxora palette */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0813;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #271a47;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #462c7e;
+    }
+    
+    /* Glowing accents and glass-like dark cards */
+    .voxora-glass-card {
+      background: linear-gradient(180deg, rgba(22, 16, 38, 0.95) 0%, rgba(14, 10, 24, 0.98) 100%);
+      border: 1px solid rgba(88, 56, 148, 0.35);
+      backdrop-filter: blur(12px);
+    }
+    .voxora-glass-card:hover {
+      border-color: rgba(139, 92, 246, 0.45);
+    }
+    .voxora-glow-card {
+      background: linear-gradient(135deg, rgba(28, 19, 48, 0.6) 0%, rgba(16, 11, 28, 0.8) 100%);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      box-shadow: 0 4px 20px -2px rgba(11, 8, 19, 0.8), 0 0 15px -4px rgba(139, 92, 246, 0.15);
+    }
+    .voxora-active-nav {
+      background: linear-gradient(90deg, rgba(139, 92, 246, 0.18) 0%, rgba(139, 92, 246, 0.04) 100%);
+      border-left: 3px solid #8b5cf6;
+      color: #ffffff;
+    }
+    .voxora-purple-btn {
+      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+      border: 1px solid #9333ea;
+      box-shadow: 0 0 15px rgba(124, 58, 237, 0.35);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .voxora-purple-btn:hover {
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+      transform: translateY(-1px);
+    }
+    .voxora-outline-btn {
+      background: rgba(139, 92, 246, 0.06);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      color: #c4b5fd;
+      transition: all 0.2s ease;
+    }
+    .voxora-outline-btn:hover {
+      background: rgba(139, 92, 246, 0.15);
+      border-color: rgba(139, 92, 246, 0.6);
+      color: #ffffff;
+    }
+    /* Pulse badge animation */
+    @keyframes subtle-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .pulse-dot {
+      animation: subtle-pulse 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="bg-voxora-950 text-gray-200 min-h-screen flex flex-col font-sans selection:bg-purple-600 selection:text-white antialiased">
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="fixed inset-0 z-[100] min-h-screen bg-[#07050d] flex items-center justify-center px-4 py-8 overflow-y-auto">
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 50% 42%, rgba(109,40,217,.16), transparent 34%), radial-gradient(circle at 50% 72%, rgba(139,92,246,.08), transparent 38%);"></div>
+    <div class="relative w-full max-w-[488px] rounded-[28px] border border-voxora-border/80 bg-[#0e0c15]/95 shadow-2xl px-8 sm:px-9 py-10 sm:py-12 backdrop-blur-xl">
+      <div class="flex items-center justify-center gap-5 mb-14">
+        <div class="w-16 h-16 flex items-center justify-center"><img src="voxora-logo.png" alt="VOXORAAI logo" class="max-w-full max-h-full object-contain"></div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-bold tracking-tight text-white">VOXORAAI</div>
+          <div class="text-[11px] sm:text-xs font-semibold tracking-[0.32em] text-purple-200 mt-1">Instant Leads</div>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h1 class="text-3xl sm:text-[32px] font-bold tracking-tight text-white">Welcome back</h1>
+        <p class="text-sm text-gray-400 mt-2">Sign in to access your voice intelligence.</p>
+      </div>
+
+      <form onsubmit="handleLogin(event)" class="space-y-5">
+        <div>
+          <label for="login-email" class="block text-xs font-medium text-gray-300 mb-2">Email</label>
+          <input id="login-email" type="email" autocomplete="username" placeholder="Enter your email" required class="w-full h-12 px-4 rounded-xl bg-[#0a0910] border border-voxora-border text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30 transition-colors">
+        </div>
+        <div>
+          <label for="login-password" class="block text-xs font-medium text-gray-300 mb-2">Password</label>
+          <div class="relative">
+            <input id="login-password" type="password" autocomplete="current-password" placeholder="Enter your password" required class="w-full h-12 px-4 pr-16 rounded-xl bg-[#0a0910] border border-voxora-border text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30 transition-colors">
+            <button type="button" onclick="toggleLoginPassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-purple-200 hover:text-white px-2 py-1">Show</button>
+          </div>
+        </div>
+        <p id="login-error" class="hidden text-xs text-rose-300 -mt-1">Please enter your email and password.</p>
+        <button type="submit" class="w-full h-12 rounded-xl voxora-purple-btn text-sm font-semibold text-white">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mobile Overlay Backdrop -->
+  <div id="mobileBackdrop" class="fixed inset-0 bg-black/70 z-30 hidden lg:hidden backdrop-blur-sm transition-opacity" onclick="toggleMobileSidebar()"></div>
+
+  <div id="crm-app" class="flex h-screen overflow-hidden">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside id="sidebar" class="w-64 bg-voxora-sidebar border-r border-voxora-border flex flex-col justify-between z-40 fixed lg:static inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out">
+      
+      <!-- Brand / Logo Header -->
+      <div>
+        <div class="h-16 flex items-center px-6 border-b border-voxora-border/70 justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 flex items-center justify-center"><img src="voxora-logo.png" alt="VOXORAAI logo" class="max-w-full max-h-full object-contain"></div>
+            <div>
+              <div class="text-sm font-semibold text-gray-200 leading-tight">VOXORAAI</div>
+              <div class="text-[11px] text-purple-300 font-semibold tracking-[0.18em] leading-tight">Instant Leads</div>
+            </div>
+          </div>
+          <!-- Close on mobile -->
+          <button class="lg:hidden text-gray-400 hover:text-white p-1" onclick="toggleMobileSidebar()">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Main Navigation Links -->
+        <nav class="p-3 space-y-1">
+          <p class="px-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-2">Core Operations</p>
+          
+          <!-- Overview -->
+          <button onclick="switchView('overview')" id="nav-overview" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-voxora-800/50 transition-colors">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span>Overview</span>
+          </button>
+
+          <!-- Clients -->
+          <button onclick="switchView('clients')" id="nav-clients" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-voxora-800/50 transition-colors">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <span>Clients</span>
+            <span id="nav-clients-count" class="ml-auto text-xs px-2 py-0.5 rounded-full bg-voxora-800 text-gray-300">4</span>
+          </button>
+
+          <!-- Calls -->
+          <button onclick="switchView('calls')" id="nav-calls" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-voxora-800/50 transition-colors">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            <span>Calls</span>
+            <span id="nav-calls-count" class="ml-auto text-xs px-2 py-0.5 rounded-full bg-voxora-800 text-gray-300">11</span>
+          </button>
+
+          <!-- NEW: Instant Lead (Highlighted Feature) -->
+          <button onclick="switchView('instant-lead')" id="nav-instant-lead" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium voxora-active-nav transition-all">
+            <div class="relative">
+              <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+            </div>
+            <span class="font-semibold text-white">Instant Lead</span>
+            <span class="ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-500 text-white shadow-glow-btn uppercase tracking-wider">New</span>
+          </button>
+
+          <p class="px-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-5">System</p>
+
+          <!-- Settings -->
+          <button onclick="switchView('settings')" id="nav-settings" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-voxora-800/50 transition-colors">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span>Settings</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Sidebar Footer User Card -->
+      <div class="p-4 border-t border-voxora-border/80 bg-voxora-900/60">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-800 to-indigo-600 flex items-center justify-center text-xs font-bold text-white border border-purple-400/40">
+              AD
+            </div>
+            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-voxora-sidebar"></span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-semibold text-white truncate">Administrator</p>
+            <p class="text-[11px] text-gray-400 truncate">admin@voxora.ai</p>
+          </div>
+          <button title="Quick Sign Out" onclick="signOut()" class="text-gray-400 hover:text-purple-300 p-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#07050d]">
+      
+      <!-- Top Sticky Header -->
+      <header class="sticky top-0 z-20 bg-voxora-950/80 backdrop-blur-md border-b border-voxora-border/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+        
+        <!-- Breadcrumb & Mobile hamburger -->
+        <div class="flex items-center gap-3">
+          <button class="lg:hidden p-2 rounded-lg text-gray-400 hover:text-white bg-voxora-800/70 border border-voxora-border" onclick="toggleMobileSidebar()">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          
+          <div>
+            <div class="flex items-center gap-2 text-xs text-gray-400">
+              <span class="hover:text-purple-400 cursor-pointer" onclick="switchView('overview')">Voxora</span>
+              <span>/</span>
+              <span id="header-breadcrumb" class="text-purple-400 font-medium">Instant Leads</span>
+            </div>
+            <h1 id="header-title" class="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2.5 mt-0.5">
+              VOXORAAI Instant Leads
+              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Live Response Active
+              </span>
+            </h1>
+          </div>
+        </div>
+
+        <!-- Right Header Action Controls -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Refresh Button matching CRM styling -->
+          <button onclick="refreshData()" title="Refresh Data" class="voxora-outline-btn px-3 py-2 rounded-lg text-xs font-medium flex items-center gap-1.5">
+            <svg id="refresh-icon" class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            <span class="hidden sm:inline">Refresh</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- VIEW 1: INSTANT LEAD MAIN DASHBOARD (PRIMARY FEATURE) -->
+      <section id="view-instant-lead" class="p-4 sm:p-8 space-y-6 max-w-7xl w-full mx-auto">
+        
+        <!-- Header Banner Description -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-1">
+          <div>
+            <p class="text-sm text-gray-400">
+              Autonomous AI caller & instant dispatch system. Detects incoming inquiries from webhooks, missed calls, and forms, placing sub-15s AI voice calls.
+            </p>
+          </div>
+        </div>
+
+        <!-- DASHBOARD STATS CARDS -->
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+          
+          <!-- Total Leads Card -->
+          <div class="voxora-glass-card rounded-xl p-4 sm:p-5 transition-all duration-200 group relative overflow-hidden">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-medium text-gray-400">Total Leads</span>
+              <div class="w-8 h-8 rounded-lg bg-purple-900/40 border border-purple-500/30 flex items-center justify-center text-purple-300 group-hover:scale-110 transition-transform">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              </div>
+            </div>
+            <div class="text-2xl font-bold text-white tracking-tight" id="stat-total-leads">18</div>
+            <div class="flex items-center gap-1 mt-2 text-[11px] text-emerald-400">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+              <span>+24.8% this week</span>
+            </div>
+          </div>
+
+          <!-- New Leads Card -->
+          <div class="voxora-glass-card rounded-xl p-4 sm:p-5 transition-all duration-200 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-medium text-gray-400">New / Uncontacted</span>
+              <div class="w-8 h-8 rounded-lg bg-emerald-950/50 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+            </div>
+            <div class="text-2xl font-bold text-emerald-400 tracking-tight" id="stat-new-leads">4</div>
+            <div class="flex items-center gap-1 mt-2 text-[11px] text-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>Awaiting instant pickup</span>
+            </div>
+          </div>
+
+          <!-- Contacted Leads Card -->
+          <div class="voxora-glass-card rounded-xl p-4 sm:p-5 transition-all duration-200 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-medium text-gray-400">Contacted</span>
+              <div class="w-8 h-8 rounded-lg bg-indigo-950/50 border border-indigo-500/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              </div>
+            </div>
+            <div class="text-2xl font-bold text-indigo-300 tracking-tight" id="stat-contacted-leads">9</div>
+            <div class="flex items-center gap-1 mt-2 text-[11px] text-gray-400">
+              <span>Avg. pick: 12.4 sec</span>
+            </div>
+          </div>
+
+          <!-- Converted Leads Card -->
+          <div class="voxora-glass-card rounded-xl p-4 sm:p-5 transition-all duration-200 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-medium text-gray-400">Converted</span>
+              <div class="w-8 h-8 rounded-lg bg-purple-950/50 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+            </div>
+            <div class="text-2xl font-bold text-purple-300 tracking-tight" id="stat-converted-leads">5</div>
+            <div class="flex items-center gap-1 mt-2 text-[11px] text-purple-400">
+              <span>27.7% conversion</span>
+            </div>
+          </div>
+
+          <!-- Response Rate Card -->
+          <div class="voxora-glass-card rounded-xl p-4 sm:p-5 transition-all duration-200 group col-span-2 lg:col-span-1">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-medium text-gray-400">Response Rate</span>
+              <div class="w-8 h-8 rounded-lg bg-fuchsia-950/50 border border-fuchsia-500/30 flex items-center justify-center text-fuchsia-300 group-hover:scale-110 transition-transform">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+            </div>
+            <div class="text-2xl font-bold text-white tracking-tight" id="stat-response-rate">94.4%</div>
+            <div class="flex items-center gap-1 mt-2 text-[11px] text-emerald-400">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>Target &lt; 15s met</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 1 CONTENT: LIVE LEADS HUB TABLE -->
+        <div id="instant-lead-tab-leads" class="space-y-4">
+          
+          <!-- Table Controls: Search and Filters -->
+          <div class="voxora-glass-card rounded-xl p-4 flex flex-col md:flex-row gap-3 items-center justify-between">
+            <!-- Search Bar -->
+            <div class="relative w-full md:w-80">
+              <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input 
+                type="text" 
+                id="lead-search-input" 
+                oninput="handleSearchLeads(this.value)"
+                placeholder="Search lead name, phone, email, source..." 
+                class="w-full pl-9 pr-4 py-2 rounded-lg bg-voxora-900 border border-voxora-border text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
+              >
+            </div>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+              <!-- Lead Status Filter -->
+              <select id="lead-filter-status" onchange="filterLeads()" class="bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2 text-xs text-gray-300 focus:outline-none focus:border-purple-500">
+                <option value="all">All Lead Statuses</option>
+                <option value="New">New</option>
+                <option value="Contacted">Contacted</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Qualified">Qualified</option>
+                <option value="Converted">Converted</option>
+                <option value="Lost">Lost</option>
+              </select>
+
+              <!-- Source Filter -->
+              <select id="lead-filter-source" onchange="filterLeads()" class="bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2 text-xs text-gray-300 focus:outline-none focus:border-purple-500">
+                <option value="all">All Sources</option>
+                <option value="Website Form">Website Form</option>
+                <option value="Missed Call">Missed Call</option>
+                <option value="WhatsApp Inbound">WhatsApp Inbound</option>
+                <option value="Webhook / API">Webhook / API</option>
+                <option value="Landing Page">Landing Page</option>
+              </select>
+
+              <!-- Reset button -->
+              <button onclick="resetLeadFilters()" class="voxora-outline-btn px-2.5 py-2 rounded-lg text-xs" title="Clear Filters">
+                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table Card Container -->
+          <div class="voxora-glass-card rounded-xl overflow-hidden border border-voxora-border">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="border-b border-voxora-border bg-voxora-900/80 text-gray-400 uppercase tracking-wider text-[11px] font-semibold">
+                    <th class="py-3.5 px-5">Lead</th>
+                    <th class="py-3.5 px-5">Source</th>
+                    <th class="py-3.5 px-5">Captured</th>
+                    <th class="py-3.5 px-5">Lead Status</th>
+                    <th class="py-3.5 px-5">Instant AI</th>
+                    <th class="py-3.5 px-5 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="leads-table-body" class="divide-y divide-voxora-border/60">
+                  <!-- Generated by JavaScript renderLeadsTable() -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="px-5 py-3.5 border-t border-voxora-border bg-voxora-900/50 text-xs text-gray-400">
+              Showing <span id="leads-shown-count" class="text-white font-semibold">0</span> of <span id="leads-total-count" class="text-white font-semibold">0</span> incoming leads
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- VIEW 2: OVERVIEW (EXISTING CRM) -->
+      <section id="view-overview" class="p-4 sm:p-8 space-y-6 max-w-7xl w-full mx-auto hidden">
+        <div class="flex items-center justify-between pb-2 border-b border-voxora-border/60">
+          <div>
+            <h2 class="text-lg font-bold text-white">System Executive Overview</h2>
+            <p class="text-xs text-gray-400">High-level telemetry of AI Voice nodes, live pipelines, and client volume.</p>
+          </div>
+          <button onclick="switchView('instant-lead')" class="voxora-purple-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-white flex items-center gap-1.5">
+            <span>Go to Instant Lead</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="voxora-glass-card rounded-xl p-4">
+            <span class="text-xs text-gray-400">Total System Inquiries</span>
+            <p class="text-2xl font-bold text-white mt-1">4,921</p>
+            <span class="text-[11px] text-emerald-400 mt-1 block">+18.2% vs last month</span>
+          </div>
+          <div class="voxora-glass-card rounded-xl p-4">
+            <span class="text-xs text-gray-400">Active Clients</span>
+            <p id="overview-active-clients" class="text-2xl font-bold text-white mt-1">4</p>
+            <span class="text-[11px] text-purple-400 mt-1 block">Active client accounts</span>
+          </div>
+          <div class="voxora-glass-card rounded-xl p-4">
+            <span class="text-xs text-gray-400">Voice Hours Processed</span>
+            <p class="text-2xl font-bold text-white mt-1">642.5 hrs</p>
+            <span class="text-[11px] text-indigo-400 mt-1 block">Latency: 280ms</span>
+          </div>
+          <div class="voxora-glass-card rounded-xl p-4">
+            <span class="text-xs text-gray-400">Instant Lead Converted</span>
+            <p class="text-2xl font-bold text-purple-300 mt-1">38.4%</p>
+            <span class="text-[11px] text-emerald-400 mt-1 block">Fastest: 6.8s</span>
+          </div>
+        </div>
+
+        <div class="w-full">
+          <!-- RECENT CALLS -->
+          <div class="voxora-glass-card rounded-xl p-5 w-full">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+    <div class="flex items-center gap-3">
+      <h3 class="text-sm font-bold text-white">Recent Calls</h3>
+      <span class="text-[11px] text-purple-300 font-mono">Latest activity</span>
+    </div>
+
+    <div class="relative w-full sm:w-72">
+      <svg
+        class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0 7 7 0 0114 0z"
+        />
+      </svg>
+
+      <input
+        id="overview-calls-search"
+        oninput="filterOverviewCalls(this.value)"
+        type="text"
+        placeholder="Search recent calls..."
+        class="w-full pl-8 pr-3 py-2 rounded-lg bg-voxora-900 border border-voxora-border text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
+      >
+    </div>
+  </div>
+
+  <div id="overview-calls-list" class="space-y-2 text-xs"></div>
+</div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: CLIENTS (EXISTING CRM) -->
+      <section id="view-clients" class="p-4 sm:p-8 space-y-6 max-w-7xl w-full mx-auto hidden">
+        <div class="flex items-center justify-between pb-2 border-b border-voxora-border/60">
+          <div>
+            <h2 class="text-lg font-bold text-white tracking-tight">Clients</h2>
+            <p class="text-xs text-gray-400">Active corporate accounts, enterprise tenants, and AI voice allocations. Click any client to view dedicated telemetry.</p>
+          </div>
+          <!-- Restricted + Add Client Action -->
+          <button onclick="openAddClientModal()" class="voxora-purple-btn px-4 py-2 rounded-lg text-xs font-semibold text-white flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+            <span>+ Add Client</span>
+          </button>
+        </div>
+
+        <div class="voxora-glass-card rounded-xl overflow-hidden border border-voxora-border">
+          <div class="p-4 border-b border-voxora-border bg-voxora-900/40">
+            <div class="relative w-full max-w-md">
+              <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input id="clients-search-input" oninput="filterClients(this.value)" type="text" placeholder="Search clients..." class="w-full pl-9 pr-4 py-2 rounded-lg bg-voxora-900 border border-voxora-border text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table id="clients-table" class="w-full text-left text-xs border-collapse">
+              <thead class="bg-voxora-900/90 text-gray-400 border-b border-voxora-border uppercase tracking-wider font-semibold">
+                <tr>
+                  <th class="py-3.5 px-4">Client Company</th>
+                  <th class="py-3.5 px-4">VOXORAAI Agent ID</th>
+                  <th class="py-3.5 px-4">From Number ID</th>
+                  <th class="py-3.5 px-4 text-right">Instant Lead</th>
+                  <th class="py-3.5 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="clients-table-body" class="divide-y divide-voxora-border/60 text-gray-300"></tbody>
+            </table>
+          </div>
+
+          <div class="px-4 py-3 bg-voxora-900/50 border-t border-voxora-border flex items-center justify-between text-xs text-gray-400">
+            <span id="clients-footer-count">Showing 0 active client accounts</span>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: CLIENT DETAILS (DEDICATED CLIENT VIEW) -->
+      <section id="view-client-details" class="p-4 sm:p-8 space-y-6 max-w-7xl w-full mx-auto hidden">
+        <!-- Back Navigation & Top Controls -->
+        <div class="flex items-center justify-between pb-2 border-b border-voxora-border/60">
+          <button onclick="switchView('clients')" class="voxora-outline-btn px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 text-gray-300 hover:text-white">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            <span>Back to Clients</span>
+          </button>
+          <span class="text-xs text-gray-400 font-mono" id="cd-timestamp">Telemetry synced</span>
+        </div>
+
+        <!-- CLIENT INFORMATION CARD -->
+        <div class="voxora-glass-card rounded-xl p-5 border border-voxora-border">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div id="cd-avatar" class="w-12 h-12 rounded-xl bg-gradient-to-tr from-purple-800 to-indigo-600 flex items-center justify-center text-white font-bold text-base shadow-glow-sm">
+                AR
+              </div>
+              <div>
+                <div class="flex items-center gap-2.5">
+                  <h2 id="cd-name" class="text-lg sm:text-xl font-bold text-white tracking-tight">Apex Realty Group</h2>
+                  <span id="cd-instant-status-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Instant Lead Active
+                  </span>
+                </div>
+                <p id="cd-domain" class="text-xs text-gray-400 mt-0.5 font-mono">apexrealty.com</p>
+              </div>
+            </div>
+
+            <!-- OmniDimension Credentials / Configuration -->
+            <div class="flex items-end justify-end gap-3 text-xs">
+              <div class="w-fit min-w-[132px] h-[64px] p-2.5 rounded-lg bg-voxora-900/80 border border-voxora-border flex flex-col justify-center">
+                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Agent ID</span>
+                <span id="cd-omni-agent-id" class="font-mono text-purple-300 text-xs font-semibold mt-0.5 whitespace-nowrap">agt_omni_884920a1</span>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-2 justify-end">
+                  <button onclick="openEditClientModal()" class="voxora-outline-btn px-2.5 py-1 rounded-lg text-[10px] font-semibold text-gray-300 hover:text-white">Edit</button>
+                  <button id="client-pause-btn" onclick="toggleClientPause()" class="voxora-outline-btn px-2.5 py-1 rounded-lg text-[10px] font-semibold text-gray-300 hover:text-white">Pause</button>
+                  <button id="client-delete-btn" onclick="deleteCurrentClient()" class="px-2.5 py-1 rounded-lg text-[10px] font-semibold text-rose-300 border border-rose-500/40 bg-rose-500/10 hover:bg-rose-500/20 hover:text-rose-200 transition-colors">Delete</button>
+                </div>
+                <div class="w-fit min-w-[158px] h-[64px] p-2.5 rounded-lg bg-voxora-900/80 border border-voxora-border flex flex-col justify-center">
+                  <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Agent Number</span>
+                  <span id="cd-omni-number-id" class="font-mono text-purple-300 text-xs font-semibold mt-0.5 whitespace-nowrap">num_from_us_4158902194</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLIENT INTEGRATION URL -->
+        <div class="voxora-glass-card rounded-xl p-4 border border-voxora-border">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400">Instant Lead Integration URL</h3>
+              <p class="text-[11px] text-gray-500 mt-1">Use this URL in the selected client's form integration.</p>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <input id="cd-integration-url" type="text" readonly value="https://api.voxoraai.com/instant-lead/mock" class="flex-1 sm:w-[360px] bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2 text-[11px] text-purple-300 font-mono focus:outline-none">
+              <button onclick="copyClientIntegrationUrl()" class="voxora-outline-btn px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLIENT-SPECIFIC OVERVIEW CARDS -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400">Client Overview Metrics</h3>
+            <span class="text-[11px] text-purple-400">Isolated Client Scope</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Total System Inquiries -->
+            <div class="voxora-glass-card rounded-xl p-4 transition-all">
+              <span class="text-xs text-gray-400">Total System Inquiries</span>
+              <p id="cd-inquiries" class="text-2xl font-bold text-white mt-1">4,921</p>
+              <span id="cd-inquiries-sub" class="text-[11px] text-emerald-400 mt-1 block">+18.2% vs last month</span>
+            </div>
+
+            <!-- Calls This Month -->
+            <div class="voxora-glass-card rounded-xl p-4 transition-all">
+              <span class="text-xs text-gray-400">Calls This Month</span>
+              <p id="cd-calls-month" class="text-2xl font-bold text-white mt-1">428</p>
+              <span id="cd-calls-month-sub" class="text-[11px] text-purple-400 mt-1 block">Inbound & Instant AI</span>
+            </div>
+
+            <!-- Voice Hours Processed -->
+            <div class="voxora-glass-card rounded-xl p-4 transition-all">
+              <span class="text-xs text-gray-400">Voice Hours Processed</span>
+              <p id="cd-voice-hours" class="text-2xl font-bold text-white mt-1">642.5 hrs</p>
+              <span id="cd-latency-sub" class="text-[11px] text-indigo-400 mt-1 block">Latency: 280ms</span>
+            </div>
+
+            <!-- Instant Lead Converted -->
+            <div class="voxora-glass-card rounded-xl p-4 transition-all">
+              <span class="text-xs text-gray-400">Instant Lead Converted</span>
+              <p id="cd-converted-rate" class="text-2xl font-bold text-purple-300 mt-1">38.4%</p>
+              <span id="cd-fastest-sub" class="text-[11px] text-emerald-400 mt-1 block">Fastest: 6.8s</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLIENT CALLS SECTION -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+                <span>Client Calls & Transcripts</span>
+                <span id="cd-calls-count-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-900/60 text-purple-300 border border-purple-500/30">0 calls</span>
+              </h3>
+              <p class="text-xs text-gray-400">Live call activity, AI voice dispositions, and recordings for this client only.</p>
+            </div>
+          </div>
+          <div class="relative w-full sm:w-80 ml-auto">
+            <svg class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input id="client-detail-calls-search" oninput="filterClientDetailCalls(this.value)" type="text" placeholder="Search client calls..." class="w-full pl-8 pr-3 py-2 rounded-lg bg-voxora-900 border border-voxora-border text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+          </div>
+
+          <!-- Client Calls Table: selected-client data only -->
+          <div class="voxora-glass-card rounded-xl overflow-hidden border border-voxora-border">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border-collapse min-w-[760px]">
+                <thead class="bg-voxora-900/90 text-gray-400 border-b border-voxora-border uppercase tracking-wider font-semibold text-[11px]">
+                  <tr>
+                    <th class="py-3 px-4">Customer</th>
+                    <th class="py-3 px-4">Phone</th>
+                    <th class="py-3 px-4">Status</th>
+                    <th class="py-3 px-4">Duration</th>
+                    <th class="py-3 px-4">Date / Time</th>
+                    <th class="py-3 px-4 text-right">View</th>
+                  </tr>
+                </thead>
+                <tbody id="cd-calls-tbody" class="divide-y divide-voxora-border/60 text-gray-300">
+                  <!-- Generated by renderClientCalls() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: CALLS (EXISTING CRM) -->
+      <section id="view-calls" class="p-4 sm:p-8 space-y-6 max-w-7xl w-full mx-auto hidden">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-bold text-white">Call Logs & Audio Transcripts</h2>
+            <p class="text-xs text-gray-400">Recent AI voice activity across the mock client accounts.</p>
+          </div>
+          <button onclick="switchView('instant-lead')" class="voxora-outline-btn px-3 py-2 rounded-lg text-xs">Back to Instant Lead</button>
+        </div>
+
+        <div class="voxora-glass-card rounded-xl overflow-hidden">
+          <div class="px-5 py-3 border-b border-voxora-border bg-voxora-900/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <span class="text-xs text-gray-400">Showing <span id="calls-visible-count" class="text-white font-semibold">11</span> mock calls</span>
+            <div class="relative w-full sm:w-80">
+              <svg class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input id="calls-search-input" oninput="filterCalls(this.value)" type="text" placeholder="Search calls, customer, phone, client..." class="w-full pl-8 pr-3 py-2 rounded-lg bg-voxora-900 border border-voxora-border text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs min-w-[760px]">
+              <thead class="bg-voxora-900/80 text-gray-400 border-b border-voxora-border uppercase tracking-wider font-semibold text-[11px]">
+                <tr>
+                  <th class="py-3 px-4">Customer</th>
+                  <th class="py-3 px-4">Phone</th>
+                  <th class="py-3 px-4">Client</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4">Duration</th>
+                  <th class="py-3 px-4">Date / Time</th>
+                  <th class="py-3 px-4 text-right">View</th>
+                </tr>
+              </thead>
+              <tbody id="recent-calls-tbody" class="divide-y divide-voxora-border/60 text-gray-300"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: SETTINGS (EXISTING CRM) -->
+      <section id="view-settings" class="p-4 sm:p-8 space-y-6 max-w-7xl w-full mx-auto hidden">
+        <div class="border-b border-voxora-border pb-3">
+          <h2 class="text-lg font-bold text-white">CRM & Environment Settings</h2>
+          <p class="text-xs text-gray-400">Global Voxora AI keys, webhook signing secrets, and SIP endpoints.</p>
+        </div>
+
+        <div class="voxora-glass-card rounded-xl p-5 space-y-4 text-xs">
+          <div class="space-y-1">
+            <label class="font-semibold text-gray-300">Webhook Public Endpoint</label>
+            <div class="flex gap-2">
+              <input type="text" readonly value="https://api.voxora.ai/v1/webhooks/instant-lead" class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2 text-purple-300 font-mono">
+              <button onclick="copyWebhookUrl()" class="voxora-outline-btn px-3 py-2 rounded-lg">Copy</button>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="font-semibold text-gray-300">Telemetry Server Region</label>
+            <input type="text" readonly value="us-east-1 (N. Virginia - Low Latency Audio)" class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2 text-gray-300">
+          </div>
+          <div class="pt-2 flex justify-end">
+            <button onclick="showToast('Settings saved to local storage.', 'success')" class="voxora-purple-btn px-4 py-2 rounded-lg text-white font-semibold">Save Global Settings</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL: INSTANT LEAD CALL DETAILS (SEPARATE FROM NORMAL CALL DETAILS) -->
+  <div id="lead-details-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md transition-all">
+    <div class="voxora-glow-card rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col border border-purple-500/40 overflow-hidden shadow-2xl">
+      <div class="px-6 py-4 border-b border-voxora-border flex items-center justify-between bg-voxora-900/90">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+          <div><div class="flex items-center gap-2"><h3 id="modal-lead-name" class="text-base font-bold text-white tracking-tight">Instant Lead Call</h3><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">Instant Lead</span></div><p class="text-xs text-gray-400 flex items-center gap-2"><span id="modal-lead-phone" class="font-mono text-gray-300">—</span><span>•</span><span id="modal-lead-call-id" class="font-mono text-gray-500">—</span></p></div>
+        </div>
+        <button onclick="closeLeadDetailsModal()" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-voxora-800 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-5 text-xs bg-voxora-950/60">
+        <div class="p-4 rounded-xl bg-voxora-900/70 border border-voxora-border space-y-3">
+          <div class="flex items-center justify-between"><h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider">Instant Lead Information</h4><span class="text-[10px] text-gray-500 font-mono">Lead Record</span></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Customer Name</span><span id="modal-lead-customer-name" class="text-white font-semibold mt-1 block">—</span></div>
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Phone Number</span><span id="modal-lead-phone-detail" class="text-white font-mono font-semibold mt-1 block">—</span></div>
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Client</span><span id="modal-lead-client" class="text-white font-semibold mt-1 block">—</span></div>
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Lead Status</span><span id="modal-lead-status-badge" class="inline-flex mt-1">—</span></div>
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Captured Date &amp; Time</span><span id="modal-lead-captured-at" class="text-gray-300 font-mono mt-1 block">—</span></div>
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Integration Source</span><span id="modal-lead-source" class="text-gray-300 mt-1 block">—</span></div>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-voxora-900/70 border border-voxora-border space-y-3">
+          <div class="flex items-center justify-between"><h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider">Instant AI Call Information</h4><span id="modal-instant-agent-label" class="text-[10px] text-gray-400 font-mono">Voxora AI</span></div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Dispatch Status</span><span id="modal-instant-dispatch-status" class="text-purple-300 font-semibold mt-1 block">—</span></div>
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Dispatch Latency</span><span id="modal-instant-dispatch-latency" class="text-emerald-400 font-semibold font-mono mt-1 block">—</span></div>
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Call Status</span><span id="modal-instant-call-status" class="text-white font-semibold mt-1 block">—</span></div>
+            <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">Call Duration</span><span id="modal-instant-call-duration" class="text-white font-mono font-semibold mt-1 block">—</span></div>
+          </div>
+          <div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><div class="flex items-center justify-between mb-2"><span class="text-[10px] text-gray-500">Recording</span><span id="modal-instant-recording-status" class="text-[10px] text-gray-400 font-mono">—</span></div><div class="flex items-center gap-3"><button onclick="toggleAudioPreview(this)" class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white hover:bg-purple-500 transition-colors shrink-0"><svg class="w-3.5 h-3.5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><div class="flex-1"><div class="w-full bg-voxora-800 h-1.5 rounded-full overflow-hidden"><div class="bg-gradient-to-r from-purple-500 to-indigo-400 h-full w-2/3"></div></div></div><span id="modal-instant-recording-duration" class="text-[11px] text-gray-400 font-mono">—</span></div></div>
+        </div>
+        <div class="p-4 rounded-xl bg-voxora-900/70 border border-voxora-border space-y-3"><h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Transcript</h4><div id="modal-transcript-container" class="space-y-2.5 p-3 rounded-lg bg-voxora-950 border border-voxora-border/60 max-h-52 overflow-y-auto"><p class="text-gray-500 italic">No transcript available.</p></div></div>
+        <div class="p-4 rounded-xl bg-voxora-900/70 border border-voxora-border space-y-3"><div class="flex items-center justify-between"><h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Form Data</h4><span class="text-[10px] text-gray-500 font-mono">Captured lead payload</span></div><div id="modal-instant-form-data" class="grid grid-cols-1 sm:grid-cols-2 gap-3"><p class="text-gray-500 italic">No form data available.</p></div></div>
+      </div>
+      <div class="px-6 py-3.5 border-t border-voxora-border bg-voxora-900/90 flex justify-end"><button onclick="closeLeadDetailsModal()" class="voxora-outline-btn px-4 py-2 rounded-lg text-xs font-medium">Close</button></div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD CLIENT -->
+  <div id="add-client-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md">
+    <div class="voxora-glow-card rounded-2xl w-full max-w-md flex flex-col border border-purple-500/40 overflow-hidden shadow-2xl">
+      <div class="px-6 py-4 border-b border-voxora-border flex items-center justify-between bg-voxora-900/90">
+        <h3 class="text-sm font-bold text-white tracking-tight">Add Client</h3>
+        <button onclick="closeAddClientModal()" class="text-gray-400 hover:text-white p-1 rounded transition-colors text-base leading-none">✕</button>
+      </div>
+      <form onsubmit="createMockClient(event)">
+        <div class="p-6 space-y-5 text-xs bg-voxora-950/80">
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider">Client Information</h4>
+            <div class="space-y-1.5">
+              <label for="add-client-company" class="font-semibold text-gray-300">Client Company <span class="text-purple-400">*</span></label>
+              <input id="add-client-company" type="text" required placeholder="Enter client company" class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors">
+            </div>
+          </div>
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider">Voice Configuration</h4>
+            <div class="space-y-3">
+              <div class="space-y-1.5">
+                <label for="add-client-agent-id" class="font-semibold text-gray-300">VOXORAAI Agent ID <span class="text-purple-400">*</span></label>
+                <input id="add-client-agent-id" type="text" required placeholder="Enter VOXORAAI Agent ID" class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2.5 text-xs text-white placeholder-gray-500 font-mono focus:outline-none focus:border-purple-500 transition-colors">
+              </div>
+              <div class="space-y-1.5">
+                <label for="add-client-number-id" class="font-semibold text-gray-300">VOXORAAI From Number ID <span class="text-purple-400">*</span></label>
+                <input id="add-client-number-id" type="text" required placeholder="Enter VOXORAAI From Number ID" class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2.5 text-xs text-white placeholder-gray-500 font-mono focus:outline-none focus:border-purple-500 transition-colors">
+              </div>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider">Lead Source</h4>
+            <div class="space-y-1.5">
+              <label for="add-client-source" class="font-semibold text-gray-300">Source <span class="text-purple-400">*</span></label>
+              <select id="add-client-source" required class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition-colors">
+                <option value="Website Form">Website Form</option>
+                <option value="Landing Page">Landing Page</option>
+                <option value="Webhook / API">Webhook / API</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t border-voxora-border bg-voxora-900/90 flex justify-end gap-2">
+          <button type="button" onclick="closeAddClientModal()" class="voxora-outline-btn px-4 py-2 rounded-lg text-xs font-medium text-gray-300 hover:text-white transition-colors">Cancel</button>
+          <button type="submit" class="voxora-purple-btn px-4 py-2 rounded-lg text-xs font-semibold text-white">Create Client</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT CLIENT -->
+  <div id="edit-client-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md">
+    <div class="voxora-glow-card rounded-2xl w-full max-w-md flex flex-col border border-purple-500/40 overflow-hidden shadow-2xl">
+      <div class="px-6 py-4 border-b border-voxora-border flex items-center justify-between bg-voxora-900/90">
+        <h3 class="text-sm font-bold text-white tracking-tight">Edit Client</h3>
+        <button type="button" onclick="closeEditClientModal()" class="text-gray-400 hover:text-white p-1 rounded transition-colors text-base leading-none">✕</button>
+      </div>
+      <form onsubmit="saveEditedClient(event)">
+        <div class="p-6 space-y-5 text-xs bg-voxora-950/80">
+          <div class="space-y-1.5">
+            <label for="edit-client-name" class="font-semibold text-gray-300">Client Name <span class="text-purple-400">*</span></label>
+            <input id="edit-client-name" type="text" required class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition-colors">
+          </div>
+          <div class="space-y-1.5">
+            <label for="edit-client-agent-id" class="font-semibold text-gray-300">VOXORAAI Agent ID <span class="text-purple-400">*</span></label>
+            <input id="edit-client-agent-id" type="text" required class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500 transition-colors">
+          </div>
+          <div class="space-y-1.5">
+            <label for="edit-client-number-id" class="font-semibold text-gray-300">VOXORAAI From Number ID <span class="text-purple-400">*</span></label>
+            <input id="edit-client-number-id" type="text" required class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-purple-500 transition-colors">
+          </div>
+          <div class="space-y-1.5">
+            <label for="edit-client-source" class="font-semibold text-gray-300">Source <span class="text-purple-400">*</span></label>
+            <select id="edit-client-source" required class="w-full bg-voxora-900 border border-voxora-border rounded-lg px-3 py-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition-colors">
+              <option value="Website Form">Website Form</option>
+              <option value="Landing Page">Landing Page</option>
+              <option value="Webhook / API">Webhook / API</option>
+            </select>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t border-voxora-border bg-voxora-900/90 flex justify-end gap-2">
+          <button type="button" onclick="closeEditClientModal()" class="voxora-outline-btn px-4 py-2 rounded-lg text-xs font-medium text-gray-300 hover:text-white transition-colors">Cancel</button>
+          <button type="submit" class="voxora-purple-btn px-4 py-2 rounded-lg text-xs font-semibold text-white">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CALL INSPECTION -->
+  <div id="call-details-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md">
+    <div class="voxora-glow-card rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col border border-purple-500/40 overflow-hidden shadow-2xl">
+      <div class="px-6 py-4 border-b border-voxora-border flex items-center justify-between bg-voxora-900/90">
+        <div>
+          <h3 id="call-modal-title" class="text-base font-bold text-white">Call Details</h3>
+          <p id="call-modal-subtitle" class="text-xs text-gray-400 mt-0.5 font-mono"></p>
+        </div>
+        <button onclick="closeCallDetailsModal()" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-voxora-800">✕</button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-4 text-xs bg-voxora-950/60">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="p-3 rounded-xl bg-voxora-900/80 border border-voxora-border"><span class="text-[10px] text-gray-500 block">Customer</span><span id="call-modal-customer" class="text-white font-semibold mt-1 block"></span></div>
+          <div class="p-3 rounded-xl bg-voxora-900/80 border border-voxora-border"><span class="text-[10px] text-gray-500 block">Status</span><span id="call-modal-status" class="text-purple-300 font-semibold mt-1 block"></span></div>
+          <div class="p-3 rounded-xl bg-voxora-900/80 border border-voxora-border"><span class="text-[10px] text-gray-500 block">Duration</span><span id="call-modal-duration" class="text-white font-mono font-semibold mt-1 block"></span></div>
+          <div class="p-3 rounded-xl bg-voxora-900/80 border border-voxora-border"><span class="text-[10px] text-gray-500 block">Outcome</span><span id="call-modal-outcome" class="text-emerald-300 font-semibold mt-1 block"></span></div>
+        </div>
+        <div class="p-4 rounded-xl bg-voxora-900/70 border border-voxora-border space-y-3">
+          <h4 class="text-xs font-bold text-purple-300 uppercase tracking-wider">Call Information</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div><span class="text-gray-500 block">Phone</span><span id="call-modal-phone" class="text-white font-mono"></span></div>
+            <div><span class="text-gray-500 block">Date / Time</span><span id="call-modal-time" class="text-gray-300"></span></div>
+            <div><span class="text-gray-500 block">Trigger</span><span id="call-modal-trigger" class="text-gray-300"></span></div>
+            <div><span class="text-gray-500 block">Sentiment</span><span id="call-modal-sentiment" class="text-gray-300"></span></div>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-voxora-900/70 border border-voxora-border">
+          <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-3">Transcript Preview</h4>
+          <div id="call-modal-transcript" class="space-y-2"></div>
+        </div>
+      </div>
+      <div class="px-6 py-3.5 border-t border-voxora-border bg-voxora-900/90 flex justify-end">
+        <button onclick="closeCallDetailsModal()" class="voxora-outline-btn px-4 py-2 rounded-lg text-xs font-medium">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER (Never uses window.alert) -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    // Ensure all state variables are bound to global scope and window
+    var currentView = window.currentView = 'instant-lead';
+    var currentPage = window.currentPage = 1;
+    var leadsPerPage = window.leadsPerPage = 7;
+    var selectedLeadId = window.selectedLeadId = null;
+    var activeClientId = window.activeClientId = null;
+    var searchQuery = window.searchQuery = "";
+    var statusFilter = window.statusFilter = "all";
+    var sourceFilter = window.sourceFilter = "all";
+
+    // Primary leads dataset for Instant Lead management (attached to global window)
+    var leadsData = window.leadsData = [
+      {
+        id: 'lead-1',
+        name: 'Sarah Jenkins',
+        phone: '+1 (415) 321-8840',
+        email: 'sjenkins@baycapital.com',
+        source: 'Website Form',
+        capturedAt: '2026-09-13 16:45:00',
+        status: 'New',
+        responseStatus: 'Pending Dispatch',
+        latency: 'Pending',
+        intentScore: 94,
+        assignedTo: 'Alex Vance',
+        budget: '$45,000',
+        service: 'Enterprise AI Inbound Voice Bot',
+        language: 'English (US)',
+        notes: 'Requested immediate callback regarding real estate portfolio voice automation.',
+        transcript: [
+          { speaker: 'System', text: 'Inbound Webhook received from baycapital.com lead form.' },
+          { speaker: 'Voxora AI', text: 'Trigger dispatched. Initiating voice bridge.' }
+        ]
+      },
+      {
+        id: 'lead-2',
+        name: 'Marcus Sterling',
+        phone: '+1 (415) 992-0199',
+        email: 'marcus@sterlingre.com',
+        source: 'Missed Call',
+        capturedAt: '2026-09-13 16:12:00',
+        status: 'Contacted',
+        responseStatus: 'Answered & Qualified',
+        latency: '11.4s',
+        intentScore: 88,
+        assignedTo: 'Alex Vance',
+        budget: '$30,000',
+        service: 'Instant Lead Callback Engine',
+        language: 'English (US)',
+        notes: 'Client answered on second ring. Qualified for 12 concurrent SIP lines.',
+        transcript: [
+          { speaker: 'Voxora AI', text: 'Hi Marcus, this is Kore calling from Voxora on behalf of Apex Realty Group. I saw you just gave us a call—how can I help you today?' },
+          { speaker: 'Marcus Sterling', text: 'Hey Kore! Wow that was fast, I literally just hung up. We have about 500 inbound property inquiries weekly and need automated phone screening.' },
+          { speaker: 'Voxora AI', text: 'That is exactly what our low-latency SIP channels handle. I can have our senior architect send over our HIPAA and high-throughput documentation right now.' },
+          { speaker: 'Marcus Sterling', text: 'Sounds ideal. Let us set that up.' }
+        ]
+      },
+      {
+        id: 'lead-3',
+        name: 'Dr. Evelyn Reed',
+        phone: '+1 (650) 774-1234',
+        email: 'ereed@luminahealth.org',
+        source: 'Webhook / API',
+        capturedAt: '2026-09-13 15:30:00',
+        status: 'Converted',
+        responseStatus: 'Contract Sent',
+        latency: '8.2s',
+        intentScore: 98,
+        assignedTo: 'Elena Rostova',
+        budget: '$85,000',
+        service: 'HIPAA Dedicated Patient Triage SIP',
+        language: 'English (US)',
+        notes: 'Signed MSA for 24 dedicated clinical lines. Onboarding queued.',
+        transcript: [
+          { speaker: 'Voxora AI', text: 'Good afternoon Dr. Reed. Following up instantly from Horizon Health clinic portal inquiry.' },
+          { speaker: 'Dr. Evelyn Reed', text: 'Yes, looking for automated triage that strictly adheres to BAA requirements.' },
+          { speaker: 'Voxora AI', text: 'All voice packets are encrypted end-to-end with sub-250ms latency.' }
+        ]
+      },
+      {
+        id: 'lead-4',
+        name: 'Carlos Ramirez',
+        phone: '+1 (305) 772-3341',
+        email: 'carlos@solarisenergy.io',
+        source: 'Landing Page',
+        capturedAt: '2026-09-13 14:15:00',
+        status: 'In Progress',
+        responseStatus: 'Engaged / Follow-up',
+        latency: '12.8s',
+        intentScore: 76,
+        assignedTo: 'Marcus Chen',
+        budget: '$18,000',
+        service: 'Solar Inbound Assessment Bot',
+        language: 'English / Spanish',
+        notes: 'Interested in bilingual voice routing for residential solar quotes.',
+        transcript: [
+          { speaker: 'Voxora AI', text: 'Hola Carlos, Voxora calling from Solaris Clean Energy to review your solar assessment.' },
+          { speaker: 'Carlos Ramirez', text: 'Hi! Yes, I wanted to understand if your AI can speak both English and Spanish smoothly.' },
+          { speaker: 'Voxora AI', text: 'Yes, we switch dynamically between English and Spanish mid-sentence if needed.' }
+        ]
+      },
+      {
+        id: 'lead-5',
+        name: 'Robert MacIntyre',
+        phone: '+1 (312) 554-9022',
+        email: 'robert@macintyrelaw.com',
+        source: 'WhatsApp Inbound',
+        capturedAt: '2026-09-13 13:58:00',
+        status: 'Qualified',
+        responseStatus: 'Answered & Qualified',
+        latency: '9.5s',
+        intentScore: 91,
+        assignedTo: 'Elena Rostova',
+        budget: '$50,000',
+        service: 'Priority Legal Intake & Escalation',
+        language: 'English (US)',
+        notes: 'Requires 24/7 personal injury case qualification.',
+        transcript: [
+          { speaker: 'Voxora AI', text: 'Hello Mr. MacIntyre, this is Voxora automated intake following up on your law firm message.' },
+          { speaker: 'Robert MacIntyre', text: 'We need rapid dispatch when potential clients message our firm after hours.' }
+        ]
+      },
+      {
+        id: 'lead-6',
+        name: 'Alicia Patel',
+        phone: '+1 (312) 890-4422',
+        email: 'apatel@vanguardgrp.net',
+        source: 'Website Form',
+        capturedAt: '2026-09-13 12:20:00',
+        status: 'New',
+        responseStatus: 'Pending Dispatch',
+        latency: 'Pending',
+        intentScore: 82,
+        assignedTo: 'Alex Vance',
+        budget: '$22,000',
+        service: 'Corporate Lead Dispatcher',
+        language: 'English (US)',
+        notes: 'Inquiry submitted 20 minutes ago. Next in automated calling queue.',
+        transcript: []
+      },
+      {
+        id: 'lead-7',
+        name: 'Gregory Hall',
+        phone: '+1 (415) 554-1029',
+        email: 'ghall@pacificcrest.org',
+        source: 'Missed Call',
+        capturedAt: '2026-09-13 11:18:00',
+        status: 'Contacted',
+        responseStatus: 'No Answer / Sent SMS',
+        latency: '14.1s',
+        intentScore: 68,
+        assignedTo: 'Marcus Chen',
+        budget: '$15,000',
+        service: 'Inbound Line Triage',
+        language: 'English (US)',
+        notes: 'Customer did not pick up initial call; fallback SMS delivered with self-booking link.',
+        transcript: [
+          { speaker: 'Voxora AI', text: 'Calling +1 (415) 554-1029. Ringing...' },
+          { speaker: 'System', text: 'Call status: No-Answer after 4 rings. Automated fallback SMS triggered.' }
+        ]
+      },
+      {
+        id: 'lead-8',
+        name: 'Danielle Brooks',
+        phone: '+1 (415) 877-3392',
+        email: 'danielle.b@summitpeak.co',
+        source: 'Website Form',
+        capturedAt: '2026-09-12 17:45:00',
+        status: 'Converted',
+        responseStatus: 'Answered & Qualified',
+        latency: '7.9s',
+        intentScore: 96,
+        assignedTo: 'Elena Rostova',
+        budget: '$60,000',
+        service: 'Multi-agent Outbound SIP Pipeline',
+        language: 'English (US)',
+        notes: 'Enterprise contract finalized. Account activated.',
+        transcript: [
+          { speaker: 'Voxora AI', text: 'Hello Danielle, connecting regarding your Summit Peak enterprise demo request.' },
+          { speaker: 'Danielle Brooks', text: 'Great timing! Let us finalize the contract terms.' }
+        ]
+      },
+      {
+        id: 'lead-9',
+        name: 'David Zhao',
+        phone: '+1 (206) 912-4411',
+        email: 'dzhao@cascadefin.com',
+        source: 'Landing Page',
+        capturedAt: '2026-09-12 14:10:00',
+        status: 'Lost',
+        responseStatus: 'No Answer / Sent SMS',
+        latency: '15.0s',
+        intentScore: 42,
+        assignedTo: 'Alex Vance',
+        budget: '$5,000',
+        service: 'Starter Voice Agent',
+        language: 'English (US)',
+        notes: 'Budget outside of enterprise minimum threshold. Follow-up email sent.',
+        transcript: []
+      }
+    ];
+
+    // Client-specific database (strictly isolated metrics and calls)
+    var clientsData = window.clientsData = {
+      'd352f343-6608-4936-a3b3-b658071a2403': {
+  id: 'd352f343-6608-4936-a3b3-b658071a2403',
+        name: 'Apex Realty Group',
+        domain: 'apexrealty.com',
+        avatarText: 'AR',
+        omniAgentId: 'agt_omni_884920a1',
+        omniNumberId: 'num_from_us_4158902194',
+        instantLeadStatus: 'Active',
+        inquiries: '4,921',
+        inquiriesTrend: '+18.2% vs last month',
+        callsThisMonth: '428',
+        callsTrend: 'Inbound & Instant AI',
+        voiceHours: '642.5 hrs',
+        latency: 'Latency: 280ms',
+        convertedRate: '38.4%',
+        fastestLead: 'Fastest: 6.8s',
+        calls: [
+          {
+            id: 'VOX-APX-94812',
+            contactName: 'Marcus Sterling',
+            phone: '+1 (415) 992-0199',
+            duration: '3m 42s',
+            sentiment: 'Positive (88%)',
+            triggerType: 'Instant Lead Callback',
+            dateTime: 'Sep 13, 4:12 PM'
+          },
+          {
+            id: 'VOX-APX-94810',
+            contactName: 'Sarah Jenkins',
+            phone: '+1 (415) 321-8840',
+            duration: '2m 15s',
+            sentiment: 'Qualified (92%)',
+            triggerType: 'Website Form Hook',
+            dateTime: 'Sep 13, 3:30 PM'
+          },
+          {
+            id: 'VOX-APX-94798',
+            contactName: 'Gregory Hall',
+            phone: '+1 (415) 554-1029',
+            duration: '1m 45s',
+            sentiment: 'Follow-up (74%)',
+            triggerType: 'Missed Call Bridge',
+            dateTime: 'Sep 13, 1:18 PM'
+          },
+          {
+            id: 'VOX-APX-94782',
+            contactName: 'Danielle Brooks',
+            phone: '+1 (415) 877-3392',
+            duration: '4m 02s',
+            sentiment: 'Converted (96%)',
+            triggerType: 'Instant Lead Callback',
+            dateTime: 'Sep 12, 5:45 PM'
+          }
+        ]
+      },
+     '23907f5f-f71f-41ee-ab7d-9246bab628cd': {
+  id: '23907f5f-f71f-41ee-ab7d-9246bab628cd',
+        name: 'Horizon Health AI',
+        domain: 'luminahealth.org',
+        avatarText: 'HH',
+        omniAgentId: 'agt_omni_hh_44129b0f',
+        omniNumberId: 'num_from_us_6504128871',
+        instantLeadStatus: 'Active',
+        inquiries: '8,140',
+        inquiriesTrend: '+22.5% vs last month',
+        callsThisMonth: '1,120',
+        callsTrend: 'HIPAA Voice Nodes',
+        voiceHours: '1,280.4 hrs',
+        latency: 'Latency: 240ms',
+        convertedRate: '44.1%',
+        fastestLead: 'Fastest: 5.4s',
+        calls: [
+          {
+            id: 'VOX-HH-88201',
+            contactName: 'Dr. Aris Thorne',
+            phone: '+1 (650) 412-8871',
+            duration: '2m 48s',
+            sentiment: 'Positive (91%)',
+            triggerType: 'Inbound Patient Triage',
+            dateTime: 'Sep 13, 4:30 PM'
+          },
+          {
+            id: 'VOX-HH-88194',
+            contactName: 'Rachel Green',
+            phone: '+1 (650) 552-9901',
+            duration: '1m 20s',
+            sentiment: 'Neutral (68%)',
+            triggerType: 'Instant Lead Callback',
+            dateTime: 'Sep 13, 2:10 PM'
+          },
+          {
+            id: 'VOX-HH-88180',
+            contactName: 'Dr. Evelyn Reed',
+            phone: '+1 (650) 774-1234',
+            duration: '3m 15s',
+            sentiment: 'Converted (95%)',
+            triggerType: 'Clinic API Trigger',
+            dateTime: 'Sep 12, 11:40 AM'
+          }
+        ]
+      },
+   '4554d6a6-2a1c-47da-bbdc-139dcfe35b56': {
+  id: '4554d6a6-2a1c-47da-bbdc-139dcfe35b56',
+        name: 'Solaris Clean Energy',
+        domain: 'solarisenergy.io',
+        avatarText: 'SC',
+       omniAgentId: '771900',
+      omniNumberId: '3057723341',
+        instantLeadStatus: 'Active',
+        inquiries: '2,410',
+        inquiriesTrend: '+9.1% vs last month',
+        callsThisMonth: '215',
+        callsTrend: 'Growth Inbound Lines',
+        voiceHours: '312.0 hrs',
+        latency: 'Latency: 310ms',
+        convertedRate: '29.8%',
+        fastestLead: 'Fastest: 8.2s',
+        calls: [
+          {
+            id: 'VOX-SOL-66110',
+            contactName: 'Carlos Ramirez',
+            phone: '+1 (305) 772-3341',
+            duration: '2m 30s',
+            sentiment: 'Interested (84%)',
+            triggerType: 'Solar Assessment Form',
+            dateTime: 'Sep 13, 12:22 PM'
+          },
+          {
+            id: 'VOX-SOL-66092',
+            contactName: 'Samantha Lee',
+            phone: '+1 (305) 441-8890',
+            duration: '1m 55s',
+            sentiment: 'Qualified (80%)',
+            triggerType: 'Instant Lead Callback',
+            dateTime: 'Sep 12, 3:15 PM'
+          }
+        ]
+      },
+    '2537ab0c-6f6a-40ae-ba0b-510e7beb0a76': {
+  id: '2537ab0c-6f6a-40ae-ba0b-510e7beb0a76',
+        name: 'MacIntyre Law Partners',
+        domain: 'macintyrelaw.com',
+        avatarText: 'ML',
+        omniAgentId: 'agt_omni_law_310899ab',
+        omniNumberId: 'num_from_us_3125549022',
+        instantLeadStatus: 'Active',
+        inquiries: '3,290',
+        inquiriesTrend: '+15.0% vs last month',
+        callsThisMonth: '340',
+        callsTrend: 'Priority Escalation SIP',
+        voiceHours: '498.2 hrs',
+        latency: 'Latency: 295ms',
+        convertedRate: '33.2%',
+        fastestLead: 'Fastest: 7.1s',
+        calls: [
+          {
+            id: 'VOX-LAW-55102',
+            contactName: 'Robert MacIntyre',
+            phone: '+1 (312) 554-9022',
+            duration: '4m 10s',
+            sentiment: 'Positive (89%)',
+            triggerType: 'Intake Webhook',
+            dateTime: 'Sep 13, 3:58 PM'
+          },
+          {
+            id: 'VOX-LAW-55091',
+            contactName: 'Alicia Patel',
+            phone: '+1 (312) 890-4422',
+            duration: '2m 05s',
+            sentiment: 'Follow-up (76%)',
+            triggerType: 'After-Hours Callback',
+            dateTime: 'Sep 12, 8:20 PM'
+          }
+        ]
+      }
+    };
+
+    // Normalize mock call metadata for deterministic newest -> oldest sorting.
+    Object.values(clientsData).forEach(client => {
+      (client.calls || []).forEach(call => {
+        const match = String(call.dateTime || '').match(/^(\w+ \d+), (\d+):(\d+) (AM|PM)$/);
+        if (match) {
+          let hour = Number(match[2]);
+          const minute = Number(match[3]);
+          if (match[4] === 'PM' && hour !== 12) hour += 12;
+          if (match[4] === 'AM' && hour === 12) hour = 0;
+          const month = new Date(`${match[1]}, 2026`).getMonth() + 1;
+          const day = Number(match[1].split(' ')[1].replace(',', ''));
+          call.dateISO = `2026-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+          call.time24 = `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}`;
+        }
+        if (!call.status) {
+          if (String(call.sentiment || '').toLowerCase().includes('converted')) call.status = 'Converted';
+          else if (String(call.sentiment || '').toLowerCase().includes('qualified')) call.status = 'Qualified';
+          else if (String(call.sentiment || '').toLowerCase().includes('follow-up')) call.status = 'Follow-up';
+          else if (String(call.sentiment || '').toLowerCase().includes('no answer')) call.status = 'No Answer';
+          else call.status = 'Completed';
+        }
+      });
+    });
+
+    // OPEN SPECIFIC CLIENT DETAILS
+    function openClientDetails(clientId) {
+      const client = (window.clientsData || clientsData)[clientId];
+      if (!client) return;
+
+      activeClientId = window.activeClientId = clientId;
+
+      // Update Client Information Header
+      document.getElementById('cd-avatar').textContent = client.avatarText;
+      document.getElementById('cd-name').textContent = client.name;
+      document.getElementById('cd-domain').textContent = client.domain;
+      document.getElementById('cd-omni-agent-id').textContent = client.omniAgentId;
+      document.getElementById('cd-omni-number-id').textContent = client.omniNumberId;
+      const integrationUrlEl = document.getElementById('cd-integration-url');
+      if (integrationUrlEl) integrationUrlEl.value = getClientIntegrationUrl(client);
+      const pauseBtn = document.getElementById('client-pause-btn');
+      const statusBadge = document.getElementById('cd-instant-status-badge');
+      const isPaused = client.instantLeadStatus === 'Paused';
+      if (pauseBtn) pauseBtn.textContent = isPaused ? 'Resume' : 'Pause';
+      if (statusBadge) {
+        statusBadge.className = isPaused
+          ? 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30'
+          : 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
+        statusBadge.innerHTML = isPaused
+          ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Instant Lead Paused'
+          : '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Instant Lead Active';
+      }
+
+      // Update Client-Specific Overview Cards
+      document.getElementById('cd-inquiries').textContent = client.inquiries;
+      document.getElementById('cd-inquiries-sub').textContent = client.inquiriesTrend;
+      document.getElementById('cd-calls-month').textContent = client.callsThisMonth;
+      document.getElementById('cd-calls-month-sub').textContent = client.callsTrend;
+      document.getElementById('cd-voice-hours').textContent = client.voiceHours;
+      document.getElementById('cd-latency-sub').textContent = client.latency;
+      document.getElementById('cd-converted-rate').textContent = client.convertedRate;
+      document.getElementById('cd-fastest-sub').textContent = client.fastestLead;
+
+      // Reset client-detail call search for the newly selected client
+      const clientDetailSearch = document.getElementById('client-detail-calls-search');
+      if (clientDetailSearch) clientDetailSearch.value = '';
+
+      // Render Client Calls
+      renderClientCalls(client);
+
+      // Switch View
+      switchView('client-details');
+      
+      // Update Top Breadcrumb
+      document.getElementById('header-breadcrumb').innerHTML = `<span class="hover:text-purple-400 cursor-pointer" onclick="switchView('clients')">Clients</span> / <span class="text-white">${client.name}</span>`;
+      document.getElementById('header-title').textContent = client.name;
+    }
+
+    // RENDER CLIENT-SPECIFIC CALLS TABLE
+ function renderClientCalls(client) {
+  const tbody = document.getElementById('cd-calls-tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  const instantLeads = window.leadsData || leadsData || [];
+
+  // Real Instant Leads belonging to this client
+  const clientInstantLeads = instantLeads
+    .filter(lead => String(lead.clientId || '') === String(client.id))
+    .map(lead => ({
+      id: lead.id,
+      contactName: lead.name || 'Unknown Customer',
+      phone: lead.phone || '—',
+      status:
+        lead.callStatus === 'pending'
+          ? 'Pending'
+          : lead.callStatus === 'dispatching'
+          ? 'Dispatching'
+          : lead.callStatus === 'dispatched'
+          ? 'Dispatched'
+          : lead.callStatus === 'failed'
+          ? 'Failed'
+          : 'Pending',
+      duration: '—',
+      dateTime: formatCapturedDate(lead.capturedAt),
+      dateISO: lead.capturedAt
+        ? new Date(lead.capturedAt).toISOString().slice(0, 10)
+        : '',
+      time24: lead.capturedAt
+        ? new Date(lead.capturedAt).toTimeString().slice(0, 5)
+        : '',
+      isInstantLead: true,
+      source: lead.source || 'Website Form'
+    }));
+
+  // Existing real calls for this client
+  const existingCalls = (client.calls || []).map(call => ({
+    ...call,
+    isInstantLead: false
+  }));
+
+  // Combine Instant Leads + existing calls
+  const sortedCalls = [
+    ...clientInstantLeads,
+    ...existingCalls
+  ].sort((a, b) => {
+    const aTime =
+      Date.parse(a.dateISO && a.time24
+        ? `${a.dateISO}T${a.time24}:00`
+        : a.dateISO || '') || 0;
+
+    const bTime =
+      Date.parse(b.dateISO && b.time24
+        ? `${b.dateISO}T${b.time24}:00`
+        : b.dateISO || '') || 0;
+
+    return bTime - aTime;
+  });
+
+  const countBadge = document.getElementById('cd-calls-count-badge');
+  if (countBadge) {
+    countBadge.textContent = `${sortedCalls.length} calls`;
+  }
+
+  if (sortedCalls.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="py-8 text-center text-gray-400">
+          No recent calls for ${client.name}.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  sortedCalls.forEach(call => {
+    const status = call.status || 'Completed';
+
+    const statusClass =
+      status === 'Converted'
+        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+        : status === 'No Answer'
+        ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+        : status === 'Pending' || status === 'Dispatching'
+        ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+        : status === 'Failed'
+        ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+        : status === 'Dispatched'
+        ? 'bg-purple-500/15 text-purple-300 border-purple-500/30'
+        : status === 'Qualified'
+        ? 'bg-purple-500/15 text-purple-300 border-purple-500/30'
+        : 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30';
+
+    const tr = document.createElement('tr');
+
+    tr.className =
+      'hover:bg-voxora-900/50 transition-colors group';
+
+    tr.setAttribute('data-client-detail-call', '');
+
+    const viewAction = call.isInstantLead
+      ? `openLeadDetailsModal('${call.id}')`
+      : `viewCallDetails('${call.id}')`;
+
+    tr.innerHTML = `
+      <td class="py-3.5 px-4 font-medium text-white">
+        <span class="block group-hover:text-purple-300 transition-colors">
+          ${call.contactName}
+        </span>
+
+        <span class="text-[10px] text-gray-500 font-mono">
+          ${call.isInstantLead ? 'Instant Lead · ' : ''}${call.id}
+        </span>
+      </td>
+
+      <td class="py-3.5 px-4 text-gray-300 font-mono whitespace-nowrap">
+        ${call.phone}
+      </td>
+
+      <td class="py-3.5 px-4 whitespace-nowrap">
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${statusClass}">
+          ${status}
+        </span>
+      </td>
+
+      <td class="py-3.5 px-4 font-mono text-gray-300 whitespace-nowrap">
+        ${call.duration || '—'}
+      </td>
+
+      <td class="py-3.5 px-4 text-gray-400 text-[11px] whitespace-nowrap">
+        ${call.dateTime || '—'}
+      </td>
+
+      <td class="py-3.5 px-4 text-right whitespace-nowrap">
+        <button
+          onclick="${viewAction}"
+          class="voxora-outline-btn px-2.5 py-1.5 rounded-lg text-[11px] font-medium hover:text-white"
+        >
+          View
+        </button>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
+
+function renderOverviewCalls() {
+  const container = document.getElementById('overview-calls-list');
+  if (!container) return;
+
+  const rows = [];
+
+  // Existing calls
+  Object.values(window.clientsData || clientsData || {}).forEach(client => {
+    (client.calls || []).forEach(call => {
+      rows.push({
+        name: call.contactName || 'Unknown Customer',
+        id: call.id || '—',
+        duration: call.duration || '—',
+        status: call.status || 'Completed',
+        timestamp:
+          call.dateISO && call.time24
+            ? Date.parse(`${call.dateISO}T${call.time24}:00`) || 0
+            : Date.parse(call.dateTime || '') || 0,
+        isInstantLead: false
+      });
+    });
+  });
+
+  // Real Instant Leads
+  const instantLeads = window.leadsData || leadsData || [];
+
+  instantLeads.forEach(lead => {
+    rows.push({
+      name: lead.name || 'Unknown Customer',
+      id: lead.id || '—',
+      duration: '—',
+      status: lead.responseStatus || 'Pending Dispatch',
+      timestamp: Date.parse(lead.capturedAt || '') || 0,
+      isInstantLead: true
+    });
+  });
+
+  // Newest first
+  rows.sort((a, b) => b.timestamp - a.timestamp);
+
+  const latest = rows.slice(0, 5);
+
+  if (latest.length === 0) {
+    container.innerHTML = `
+      <div class="p-4 rounded-lg bg-voxora-900/70 border border-voxora-border/70 text-center text-gray-500">
+        No recent calls yet.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = latest.map(call => {
+    const status = call.status || 'Completed';
+
+    const statusClass =
+      status.toLowerCase().includes('pending')
+        ? 'text-amber-300'
+        : status.toLowerCase().includes('failed')
+        ? 'text-rose-300'
+        : 'text-purple-300';
+
+    return `
+      <div
+        data-overview-call
+        class="p-2.5 rounded-lg bg-voxora-900/70 border border-voxora-border/70 flex items-center justify-between gap-3"
+      >
+        <div class="min-w-0">
+          <div class="text-gray-200 font-medium truncate">
+            ${call.name}
+          </div>
+
+          <div class="text-gray-500 font-mono truncate">
+            ${call.isInstantLead ? 'Instant Lead · ' : ''}${call.id}
+            ${call.duration !== '—' ? ` · ${call.duration}` : ''}
+          </div>
+        </div>
+
+        <span class="${statusClass} whitespace-nowrap">
+          ${status}
+        </span>
+      </div>
+    `;
+  }).join('');
+}
+
+    function renderRecentCalls() {
+  const tbody = document.getElementById('recent-calls-tbody');
+
+  const rows = [];
+
+  // Existing calls
+  Object.values(window.clientsData || clientsData || {}).forEach(client => {
+    (client.calls || []).forEach(call => {
+      rows.push({
+        ...call,
+        clientName: client.name,
+        isInstantLead: false
+      });
+    });
+  });
+
+  // Real Instant Leads
+  const instantLeads = window.leadsData || leadsData || [];
+
+  instantLeads.forEach(lead => {
+    rows.push({
+      id: lead.id,
+      contactName: lead.name || 'Unknown Customer',
+      phone: lead.phone || '—',
+      clientName: lead.client || '—',
+
+      status:
+        lead.callStatus === 'pending'
+          ? 'Pending'
+          : lead.callStatus === 'dispatching'
+          ? 'Dispatching'
+          : lead.callStatus === 'dispatched'
+          ? 'Dispatched'
+          : lead.callStatus === 'failed'
+          ? 'Failed'
+          : 'Pending',
+
+      duration: '—',
+
+      dateISO: lead.capturedAt || '',
+      time24: lead.capturedAt
+        ? new Date(lead.capturedAt).toTimeString().slice(0, 5)
+        : '',
+
+      dateTime: lead.capturedAt
+        ? formatCapturedDate(lead.capturedAt)
+        : '—',
+
+      isInstantLead: true
+    });
+  });
+
+   // Newest first
+  rows.sort((a, b) => {
+    const getTime = (call) => {
+      if (call.isInstantLead && call.dateISO) {
+        return Date.parse(call.dateISO) || 0;
+      }
+
+      if (call.dateISO && call.time24) {
+        return Date.parse(`${call.dateISO}T${call.time24}:00`) || 0;
+      }
+
+      if (call.dateTime) {
+        return Date.parse(call.dateTime) || 0;
+      }
+
+      return 0;
+    };
+
+    return getTime(b) - getTime(a);
+  });
+
+  const totalCalls = rows.length;
+
+  const q = (window.callsSearchQuery || '')
+    .toLowerCase()
+    .trim();
+
+  const filteredRows = q
+    ? rows.filter(call =>
+        [
+          call.contactName,
+          call.phone,
+          call.clientName,
+          call.status,
+          call.id
+        ].some(v =>
+          String(v || '')
+            .toLowerCase()
+            .includes(q)
+        )
+      )
+    : rows;
+
+  const navCalls =
+    document.getElementById('nav-calls-count');
+
+  const visibleCalls =
+    document.getElementById('calls-visible-count');
+
+  if (navCalls) {
+    navCalls.textContent = totalCalls;
+  }
+
+  if (visibleCalls) {
+    visibleCalls.textContent = filteredRows.length;
+  }
+
+  if (!tbody) return;
+
+  if (filteredRows.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="py-10 text-center text-gray-400">
+          No calls available.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filteredRows.map(call => {
+    const status = call.status || 'Completed';
+
+    const statusClass =
+      status === 'Converted'
+        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+        : status === 'No Answer'
+        ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+        : status === 'Pending' || status === 'Dispatching'
+        ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+        : status === 'Failed'
+        ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+        : status === 'Dispatched'
+        ? 'bg-purple-500/15 text-purple-300 border-purple-500/30'
+        : status === 'Qualified'
+        ? 'bg-purple-500/15 text-purple-300 border-purple-500/30'
+        : 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30';
+
+    const viewAction = call.isInstantLead
+      ? `openLeadDetailsModal('${call.id}')`
+      : `viewCallDetails('${call.id}')`;
+
+    return `
+      <tr class="hover:bg-voxora-900/50 transition-colors">
+
+        <td class="py-3.5 px-4 font-medium text-white">
+          ${call.contactName}
+
+          ${
+            call.isInstantLead
+              ? `<span class="text-[9px] text-purple-400 block mt-0.5 uppercase tracking-wider">Instant Lead</span>`
+              : ''
+          }
+        </td>
+
+        <td class="py-3.5 px-4 font-mono text-gray-300 whitespace-nowrap">
+          ${call.phone}
+        </td>
+
+        <td class="py-3.5 px-4 text-gray-300">
+          ${call.clientName}
+        </td>
+
+        <td class="py-3.5 px-4">
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${statusClass} border">
+            ${status}
+          </span>
+        </td>
+
+        <td class="py-3.5 px-4 font-mono text-gray-300">
+          ${call.duration || '—'}
+        </td>
+
+        <td class="py-3.5 px-4 text-gray-400 whitespace-nowrap">
+          ${call.dateTime || '—'}
+        </td>
+
+        <td class="py-3.5 px-4 text-right">
+          <button
+            onclick="${viewAction}"
+            class="voxora-outline-btn px-2.5 py-1.5 rounded-lg text-[11px]"
+          >
+            View
+          </button>
+        </td>
+
+      </tr>
+    `;
+  }).join('');
+}
+
+    function updateClientCounts() {
+      const clients = Object.values(window.clientsData || clientsData || {});
+      const count = clients.length;
+      const navClients = document.getElementById('nav-clients-count');
+      const overviewClients = document.getElementById('overview-active-clients');
+      if (navClients) navClients.textContent = count;
+      if (overviewClients) overviewClients.textContent = count;
+    }
+
+    // Parses a value into a strict integer (digits only, optional leading -).
+    // Returns NaN if the value is not a clean whole number (mirrors backend "valid integer" checks).
+    /* =========================================================
+       LOCAL OVERLAY STORE  (status + source)
+
+       The current backend PUT /api/instant-clients/:id only writes
+       client_name, agent_id and from_number_id. The instant_clients
+       table has no `source` column and the route explicitly does not
+       touch `is_active`, so Pause/Activate and Source cannot round-trip
+       through the API yet.
+
+       Until those columns/route changes exist, we keep them in a small
+       browser-local overlay keyed by the client's Supabase UUID, and
+       merge the overlay on top of every API load. Name / Agent ID /
+       From Number ID still come from (and persist to) the backend.
+    ========================================================= */
+    const CLIENT_OVERLAY_KEY = 'voxora_client_overlay_v1';
+
+    function readClientOverlay() {
+      try {
+        const raw = window.localStorage.getItem(CLIENT_OVERLAY_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return (parsed && typeof parsed === 'object') ? parsed : {};
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function writeClientOverlay(clientId, patch) {
+      if (!clientId || !patch) return;
+      try {
+        const all = readClientOverlay();
+        all[clientId] = { ...(all[clientId] || {}), ...patch };
+        window.localStorage.setItem(CLIENT_OVERLAY_KEY, JSON.stringify(all));
+      } catch (_) {
+        // Storage unavailable (private mode / disabled) — the in-memory
+        // value still applies for the rest of this session.
+      }
+    }
+
+    function getClientOverlay(clientId) {
+      if (!clientId) return {};
+      return readClientOverlay()[clientId] || {};
+    }
+
+    function parseIntegerField(value) {
+      if (value === null || value === undefined) return NaN;
+      if (typeof value === 'number') return Number.isFinite(value) ? Math.trunc(value) : NaN;
+      // Accept plain whole numbers, and tolerate surrounding whitespace, thousand
+      // separators (e.g. "12,345") and a trailing ".0" that some backends/serializers
+      // may add to BIGINT values (e.g. "12345.0") — all of these represent the same
+      // valid whole number and should not be rejected.
+      let trimmed = String(value).trim().replace(/[,\s]/g, '');
+      if (trimmed === '') return NaN;
+      const decimalMatch = trimmed.match(/^(-?\d+)\.0+$/);
+      if (decimalMatch) trimmed = decimalMatch[1];
+      if (!/^-?\d+$/.test(trimmed)) return NaN;
+      return parseInt(trimmed, 10);
+    }
+
+    // Looks up a client's OmniDimension Agent ID / From Number ID no matter which
+    // property name the current in-memory client object happens to have it under
+    // (the UI-friendly omniAgentId/omniNumberId names, or the raw backend column
+    // names that get merged in from the API response), so existing values are
+    // never lost/blanked out when we only need to change something else (e.g. status).
+    function getClientAgentId(client) {
+      if (!client) return NaN;
+      return parseIntegerField(client.omniAgentId ?? client.agent_id ?? client.omnidimension_agent_id);
+    }
+    function getClientNumberId(client) {
+      if (!client) return NaN;
+      return parseIntegerField(client.omniNumberId ?? client.from_number_id ?? client.omnidimension_from_number_id);
+    }
+
+    // Reads a client's pause/active status from a backend row, tolerating several
+    // possible field names/shapes (status, instant_lead_status, is_active, etc.)
+    // so that whichever column the existing Supabase table actually uses is picked up.
+    function normalizeInstantLeadStatus(row, fallback) {
+      const fallbackStatus = fallback === 'Paused' ? 'Paused' : 'Active';
+      if (!row || typeof row !== 'object') return fallbackStatus;
+
+      const raw = row.status ?? row.instant_lead_status ?? row.instantLeadStatus ?? row.client_status;
+      if (raw !== undefined && raw !== null && raw !== '') {
+        const normalized = String(raw).trim().toLowerCase();
+        if (['paused', 'pause', 'inactive', 'false', '0'].includes(normalized)) return 'Paused';
+        if (['active', 'resumed', 'true', '1'].includes(normalized)) return 'Active';
+      }
+      if (typeof row.is_active === 'boolean') return row.is_active ? 'Active' : 'Paused';
+      if (typeof row.isActive === 'boolean') return row.isActive ? 'Active' : 'Paused';
+
+      return fallbackStatus;
+    }
+
+    async function toggleClientPause() {
+      if (!activeClientId) return;
+      const clients = (window.clientsData || clientsData);
+      const client = clients[activeClientId];
+      if (!client) return;
+
+      const currentStatus = client.instantLeadStatus === 'Paused' ? 'Paused' : 'Active';
+      const newStatus = currentStatus === 'Paused' ? 'Active' : 'Paused';
+
+      const btn = document.getElementById('client-pause-btn');
+      const badge = document.getElementById('cd-instant-status-badge');
+      if (btn) btn.disabled = true;
+
+      // Pause/Activate changes ONLY the status. It deliberately does NOT call
+      // PUT /api/instant-clients/:id, because that route requires
+      // client_name + agent_id + from_number_id on every request and would
+      // reject a status-only change with:
+      //   "client_name, agent_id, and from_number_id are required."
+      // It also never writes is_active, so the round-trip could not persist
+      // the status anyway. Agent ID and From Number ID are left untouched.
+      client.instantLeadStatus = newStatus;
+      writeClientOverlay(activeClientId, { instantLeadStatus: newStatus });
+      if (btn) btn.disabled = false;
+
+      const isPaused = client.instantLeadStatus === 'Paused';
+      if (btn) btn.textContent = isPaused ? 'Resume' : 'Pause';
+      if (badge) {
+        badge.className = isPaused
+          ? 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30'
+          : 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
+        badge.innerHTML = isPaused
+          ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Instant Lead Paused'
+          : '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Instant Lead Active';
+      }
+      renderClientsTable();
+      showToast(isPaused ? `Instant Lead paused for ${client.name}.` : `Instant Lead resumed for ${client.name}.`, isPaused ? 'warning' : 'success');
+    }
+
+    /* =========================================================
+       DELETE CLIENT
+
+       Uses the client's REAL Supabase UUID (activeClientId, which comes
+       straight from row.id on GET /api/instant-clients). Requires an
+       explicit confirmation naming the client, deletes only that one row,
+       then removes it from the in-memory state and re-reads the list from
+       the API so it cannot reappear after a refresh.
+    ========================================================= */
+    function isRealClientUUID(value) {
+      return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ''));
+    }
+
+    // Called from the Delete button on the client's row in the Clients table,
+    // and from the Delete button in Client Details.
+    async function deleteClientById(clientId) {
+      if (!clientId) return;
+      const clients = (window.clientsData || clientsData);
+      const client = clients[clientId];
+      if (!client) return;
+
+      const clientName = client.name || 'this client';
+
+      // Step 1: explicit confirmation that names the client. Never a silent
+      // one-click delete.
+      const confirmed = window.confirm(
+        `Delete client "${clientName}"?\n\n` +
+        `This permanently removes the client record. Leads and calls already ` +
+        `captured for this client are not affected.\n\n` +
+        `This cannot be undone.`
+      );
+      if (!confirmed) return;
+
+      const deleteBtn = document.getElementById('client-delete-btn');
+      const originalLabel = deleteBtn ? deleteBtn.textContent : 'Delete';
+      if (deleteBtn) { deleteBtn.disabled = true; deleteBtn.textContent = 'Deleting...'; }
+
+      try {
+        // Only clients that exist in Supabase can be deleted server-side.
+        // Locally-created (not-yet-persisted) clients are removed from state only.
+        if (isRealClientUUID(clientId)) {
+          const response = await fetch(`/api/instant-clients/${encodeURIComponent(clientId)}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || !result.success) {
+            throw new Error(
+              result.details
+                ? `${result.error || 'Unable to delete client.'}\n\nDetails: ${result.details}`
+                : (result.error || 'Unable to delete client.')
+            );
+          }
+        }
+
+        // Remove ONLY this client from in-memory state.
+        delete clients[clientId];
+        if (window.clientsData && window.clientsData !== clients) delete window.clientsData[clientId];
+
+        // Drop its local status/source overlay so a new client reusing the
+        // id can never inherit it.
+        try {
+          const all = readClientOverlay();
+          delete all[clientId];
+          window.localStorage.setItem(CLIENT_OVERLAY_KEY, JSON.stringify(all));
+        } catch (_) {}
+
+        // If the deleted client was open in Client Details, leave that view.
+        if (activeClientId === clientId) {
+          activeClientId = window.activeClientId = null;
+          closeEditClientModal();
+          switchView('clients');
+        }
+
+        updateClientCounts();
+        renderClientsTable();
+        renderRecentCalls();
+
+        // Re-read from the API so the list reflects the database.
+        await loadClientsFromApi();
+
+        showToast(`Client "${clientName}" deleted.`, 'success');
+      } catch (error) {
+        showToast(error.message || 'Unable to delete client.', 'warning');
+      } finally {
+        if (deleteBtn) { deleteBtn.disabled = false; deleteBtn.textContent = originalLabel; }
+      }
+    }
+
+    // Delete button inside Client Details acts on the currently open client.
+    function deleteCurrentClient() {
+      if (!activeClientId) return;
+      return deleteClientById(activeClientId);
+    }
+
+    // VIEW SWITCHER
+    function switchView(viewName) {
+      currentView = window.currentView = viewName;
+      if (viewName === 'calls' && typeof renderRecentCalls === 'function') renderRecentCalls();
+      
+      const views = ['overview', 'clients', 'client-details', 'calls', 'instant-lead', 'settings'];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        const navEl = document.getElementById(`nav-${v}`);
+        if (el) {
+          if (v === viewName) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        }
+        if (navEl) {
+          if (v === viewName || (viewName === 'client-details' && v === 'clients')) {
+            navEl.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium voxora-active-nav transition-all";
+          } else {
+            navEl.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-voxora-800/50 transition-colors";
+          }
+        }
+      });
+
+      const headerTitle = document.getElementById('header-title');
+      const breadcrumb = document.getElementById('header-breadcrumb');
+      if (viewName === 'instant-lead') {
+        breadcrumb.textContent = 'Instant Lead';
+        headerTitle.innerHTML = `Instant Lead <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Live Response Active</span>`;
+      } else if (viewName === 'client-details') {
+        // Handled in openClientDetails
+      } else {
+        const capitalized = viewName.charAt(0).toUpperCase() + viewName.slice(1);
+        breadcrumb.textContent = capitalized;
+        headerTitle.innerHTML = capitalized;
+      }
+
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('mobileBackdrop');
+      if (sidebar) sidebar.classList.add('-translate-x-full');
+      if (backdrop) backdrop.classList.add('hidden');
+    }
+
+    // MOBILE SIDEBAR TOGGLE
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('mobileBackdrop');
+      if (!sidebar) return;
+      const isClosed = sidebar.classList.contains('-translate-x-full');
+      if (isClosed) {
+        sidebar.classList.remove('-translate-x-full');
+        if (backdrop) backdrop.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        if (backdrop) backdrop.classList.add('hidden');
+      }
+    }
+
+    function handleSearchLeads(val) {
+      searchQuery = window.searchQuery = (val || "").toLowerCase().trim();
+      currentPage = window.currentPage = 1;
+      renderLeadsTable();
+    }
+
+    function filterLeads() {
+      const statusEl = document.getElementById('lead-filter-status');
+      const sourceEl = document.getElementById('lead-filter-source');
+      statusFilter = window.statusFilter = statusEl ? statusEl.value : 'all';
+      sourceFilter = window.sourceFilter = sourceEl ? sourceEl.value : 'all';
+      currentPage = window.currentPage = 1;
+      renderLeadsTable();
+    }
+
+    function resetLeadFilters() {
+      const searchEl = document.getElementById('lead-search-input');
+      const statusEl = document.getElementById('lead-filter-status');
+      const sourceEl = document.getElementById('lead-filter-source');
+      if (searchEl) searchEl.value = "";
+      if (statusEl) statusEl.value = "all";
+      if (sourceEl) sourceEl.value = "all";
+      searchQuery = window.searchQuery = "";
+      statusFilter = window.statusFilter = "all";
+      sourceFilter = window.sourceFilter = "all";
+      currentPage = window.currentPage = 1;
+      renderLeadsTable();
+      showToast("Filters reset to default.", "info");
+    }
+
+    function getFilteredLeads() {
+      const data = window.leadsData || leadsData || [];
+      if (!Array.isArray(data)) return [];
+      
+      const q = window.searchQuery || searchQuery || "";
+      const sFilter = window.statusFilter || statusFilter || "all";
+      const srcFilter = window.sourceFilter || sourceFilter || "all";
+
+      return data.filter(item => {
+        if (!item) return false;
+        const matchesSearch = !q || 
+          (item.name && item.name.toLowerCase().includes(q)) ||
+          (item.phone && item.phone.toLowerCase().includes(q)) ||
+          (item.email && item.email.toLowerCase().includes(q)) ||
+          (item.source && item.source.toLowerCase().includes(q));
+        
+        const matchesStatus = (sFilter === 'all') || (item.status === sFilter);
+        const matchesSource = (srcFilter === 'all') || (item.source === srcFilter);
+
+        return matchesSearch && matchesStatus && matchesSource;
+      });
+    }
+
+    // BADGE STYLING HELPER
+    function getStatusBadgeHtml(status) {
+      switch (status) {
+        case 'New':
+          return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> New</span>`;
+        case 'Contacted':
+          return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">Contacted</span>`;
+        case 'In Progress':
+          return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">In Progress</span>`;
+        case 'Qualified':
+          return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">Qualified</span>`;
+        case 'Converted':
+          return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">Converted</span>`;
+        case 'Lost':
+          return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30">Lost</span>`;
+        default:
+          return `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-gray-800 text-gray-300">${status}</span>`;
+      }
+    }
+
+    // Clean human-readable date formatter without seconds
+    function formatCapturedDate(dateStr) {
+      if (!dateStr) return '';
+      try {
+        const d = new Date(dateStr.replace(' ', 'T'));
+        if (!isNaN(d.getTime())) {
+          const month = d.toLocaleString('en-US', { month: 'short' });
+          const day = d.getDate();
+          let hours = d.getHours();
+          const minutes = d.getMinutes().toString().padStart(2, '0');
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12;
+          hours = hours ? hours : 12;
+          return `${month} ${day}, ${hours}:${minutes} ${ampm}`;
+        }
+      } catch (e) {}
+      return dateStr;
+    }
+
+function normalizeInstantLead(row) {
+  const customData = row.custom_data || {};
+  const rawFormData = row.raw_form_data || {};
+
+  const statusMap = {
+    pending: 'New',
+    dispatching: 'In Progress',
+    dispatched: 'Contacted',
+    failed: 'Lost'
+  };
+
+  const responseMap = {
+    pending: 'Pending Dispatch',
+    dispatching: 'Dispatching',
+    dispatched: 'Dispatched',
+    failed: 'Dispatch Failed'
+  };
+
+  const status = row.call_status || 'pending';
+
+  return {
+    id: row.id,
+
+    name:
+      row.customer_name ||
+      customData.customer_name ||
+      rawFormData.customer_name ||
+      'Unknown Customer',
+
+    phone:
+      row.phone ||
+      customData.phone ||
+      rawFormData.phone ||
+      '—',
+
+    client: row.client_name || '—',
+
+    source: row.source || 'Website Form',
+
+    capturedAt:
+      row.created_at ||
+      new Date().toISOString(),
+
+    status:
+      statusMap[status] || 'New',
+
+    responseStatus:
+      responseMap[status] || 'Pending Dispatch',
+
+    latency: 'Pending',
+
+    callStatus: status,
+    clientId: row.client_id,
+    integrationId: row.integration_id,
+    omnidimRequestId: row.omnidim_request_id,
+    omnidimCallId: row.omnidim_call_id,
+    errorMessage: row.error_message,
+
+    customData,
+    rawFormData,
+
+    email:
+      customData.email ||
+      rawFormData.email ||
+      '',
+
+    service:
+      customData.requirement ||
+      customData.service ||
+      rawFormData.requirement ||
+      rawFormData.service ||
+      '',
+
+    language:
+      customData.language ||
+      rawFormData.language ||
+      '',
+
+    transcript: [],
+    assignedTo: '',
+    notes: ''
+  };
+}
+
+async function loadInstantLeads() {
+  try {
+    const response = await fetch('/api/instant-leads', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok || !result.success) {
+      throw new Error(
+        result.details ||
+        result.error ||
+        'Unable to load instant leads.'
+      );
+    }
+
+    const normalized = (result.leads || []).map(normalizeInstantLead);
+
+    leadsData = window.leadsData = normalized;
+
+renderLeadsTable();
+renderOverviewCalls();
+
+  } catch (error) {
+    console.error('LOAD INSTANT LEADS FAILED:', error);
+
+    leadsData = window.leadsData = [];
+
+    renderLeadsTable();
+
+    showToast(
+      error.message || 'Unable to load instant leads.',
+      'warning'
+    );
+  }
+}
+
+    function renderLeadsTable() {
+  const filtered = getFilteredLeads();
+  const totalCount = filtered.length;
+  const paginated = filtered;
+
+  const tbody = document.getElementById('leads-table-body');
+  if (!tbody) return;
+
+  tbody.innerHTML = "";
+
+  if (paginated.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="py-12 text-center text-gray-400">
+          <div class="flex flex-col items-center justify-center gap-2">
+            <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-sm font-semibold text-gray-300">No matching leads found</p>
+            <p class="text-xs text-gray-500">Try adjusting your search criteria or filters.</p>
+          </div>
+        </td>
+      </tr>
+    `;
+  } else {
+    paginated.forEach(lead => {
+      const tr = document.createElement('tr');
+
+      tr.className =
+        "hover:bg-voxora-900/50 transition-colors group";
+
+      tr.innerHTML = `
+        <td class="py-3.5 px-5">
+          <span
+            class="font-medium text-white text-sm block hover:text-purple-300 cursor-pointer transition-colors"
+            onclick="openLeadDetailsModal('${lead.id}')"
+          >
+            ${lead.name}
+          </span>
+
+          <span class="text-xs text-gray-400 block mt-0.5 tracking-tight font-mono">
+            ${lead.phone}
+          </span>
+        </td>
+
+        <td class="py-3.5 px-5 whitespace-nowrap text-xs text-gray-300 font-medium">
+          ${lead.source || '—'}
+        </td>
+
+        <td class="py-3.5 px-5 whitespace-nowrap text-xs text-gray-400 font-medium">
+          ${formatCapturedDate(lead.capturedAt)}
+        </td>
+
+        <td class="py-3.5 px-5 whitespace-nowrap">
+          ${getStatusBadgeHtml(lead.status)}
+        </td>
+
+        <td class="py-3.5 px-5 whitespace-nowrap">
+          <div class="flex items-center gap-1.5 text-xs text-purple-200 font-medium">
+            <span
+              class="w-1.5 h-1.5 rounded-full ${
+                lead.responseStatus &&
+                lead.responseStatus.toLowerCase().includes('pending')
+                  ? 'bg-amber-400 animate-pulse'
+                  : lead.responseStatus &&
+                    lead.responseStatus.toLowerCase().includes('failed')
+                    ? 'bg-rose-400'
+                    : 'bg-purple-400'
+              }"
+            ></span>
+
+            <span>${lead.responseStatus || 'Pending Dispatch'}</span>
+          </div>
+
+          <span class="text-[11px] text-gray-500 block mt-0.5 font-mono">
+            ${
+              lead.latency && lead.latency !== 'Pending'
+                ? `SLA ${lead.latency}`
+                : 'SLA Pending'
+            }
+          </span>
+        </td>
+
+        <td class="py-3.5 px-5 text-right whitespace-nowrap">
+          <button
+            onclick="openLeadDetailsModal('${lead.id}')"
+            title="View Lead Details"
+            class="voxora-outline-btn px-3 py-1.5 rounded-lg text-xs font-medium hover:text-white hover:border-purple-400 transition-all"
+          >
+            View
+          </button>
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  const shownCountEl =
+    document.getElementById('leads-shown-count');
+
+  const totalCountEl =
+    document.getElementById('leads-total-count');
+
+  if (shownCountEl) {
+    shownCountEl.textContent = paginated.length;
+  }
+
+  if (totalCountEl) {
+    totalCountEl.textContent = totalCount;
+  }
+
+  recalculateStats();
+}
+
+    function changePage(delta) {
+      currentPage = window.currentPage = (currentPage + delta);
+      renderLeadsTable();
+    }
+
+    function recalculateStats() {
+      const data = window.leadsData || leadsData || [];
+      const total = data.length;
+      const newLeads = data.filter(l => l.status === 'New').length;
+      const contacted = data.filter(l => l.status === 'Contacted' || l.status === 'In Progress').length;
+      const converted = data.filter(l => l.status === 'Converted').length;
+      
+      const responseRate = total > 0 ? (((total - data.filter(l => l.status === 'Lost').length) / total) * 100).toFixed(1) + "%" : "100%";
+
+      const totalEl = document.getElementById('stat-total-leads');
+      const newEl = document.getElementById('stat-new-leads');
+      const contactedEl = document.getElementById('stat-contacted-leads');
+      const convertedEl = document.getElementById('stat-converted-leads');
+      const respEl = document.getElementById('stat-response-rate');
+
+      if (totalEl) totalEl.textContent = total;
+      if (newEl) newEl.textContent = newLeads;
+      if (contactedEl) contactedEl.textContent = contacted;
+      if (convertedEl) convertedEl.textContent = converted;
+      if (respEl) respEl.textContent = responseRate;
+    }
+
+    // Instant Lead uses its own detail view. Normal Calls continue to use viewCallDetails().
+    function openLeadDetailsModal(id) {
+      selectedLeadId = window.selectedLeadId = id;
+      const data = window.leadsData || leadsData || [];
+      const lead = data.find(l => l.id === id);
+      if (!lead) return;
+
+      let matchedClient = null;
+      let matchedCall = null;
+      Object.values(window.clientsData || clientsData || {}).some(client => {
+        const call = (client.calls || []).find(c => c.phone === lead.phone || c.contactName === lead.name);
+        if (call) { matchedClient = client; matchedCall = call; return true; }
+        return false;
+      });
+
+      const clientName = lead.client || (matchedClient && matchedClient.name) || '—';
+      const callId = matchedCall ? matchedCall.id : lead.id;
+      const duration = matchedCall && matchedCall.duration ? matchedCall.duration : '—';
+      const response = String(lead.responseStatus || '').trim();
+      const dispatchStatus = response.toLowerCase().includes('pending') ? 'Pending Dispatch' : (response ? 'Dispatched' : '—');
+      const lower = response.toLowerCase();
+      const callStatus = lower.includes('pending') ? 'Not Started' : lower.includes('no answer') ? 'No Answer' : (lower.includes('follow-up') || lower.includes('engaged')) ? 'In Progress' : (response ? 'Completed' : '—');
+
+      document.getElementById('modal-lead-name').textContent = lead.name;
+      document.getElementById('modal-lead-phone').textContent = lead.phone;
+      document.getElementById('modal-lead-call-id').textContent = callId;
+      document.getElementById('modal-lead-customer-name').textContent = lead.name;
+      document.getElementById('modal-lead-phone-detail').textContent = lead.phone;
+      document.getElementById('modal-lead-client').textContent = clientName;
+      document.getElementById('modal-lead-status-badge').innerHTML = getStatusBadgeHtml(lead.status);
+      document.getElementById('modal-lead-captured-at').textContent = formatCapturedDate(lead.capturedAt);
+      document.getElementById('modal-lead-source').textContent = lead.source || '—';
+      document.getElementById('modal-instant-dispatch-status').textContent = dispatchStatus;
+      document.getElementById('modal-instant-dispatch-latency').textContent = lead.latency || '—';
+      document.getElementById('modal-instant-call-status').textContent = callStatus;
+      document.getElementById('modal-instant-call-duration').textContent = duration;
+      document.getElementById('modal-instant-recording-status').textContent = (lead.transcript && lead.transcript.length) || matchedCall ? 'Available' : 'Not available';
+      document.getElementById('modal-instant-recording-duration').textContent = duration;
+      document.getElementById('modal-instant-agent-label').textContent = matchedCall ? 'Voxora AI · Instant Lead' : 'Voxora AI';
+
+      const transcriptBox = document.getElementById('modal-transcript-container');
+      transcriptBox.innerHTML = '';
+      if (lead.transcript && lead.transcript.length) {
+        lead.transcript.forEach(line => {
+          const isAI = line.speaker === 'Voxora AI' || line.speaker === 'System';
+          const item = document.createElement('div');
+          item.className = `p-2 rounded ${isAI ? 'bg-purple-950/40 border border-purple-500/20 text-purple-200' : 'bg-voxora-900 border border-voxora-border/60 text-gray-200'}`;
+          item.innerHTML = `<span class="font-bold text-[10px] uppercase tracking-wider block ${isAI ? 'text-purple-400' : 'text-emerald-400'}">${line.speaker}</span><p class="text-xs mt-0.5">${line.text}</p>`;
+          transcriptBox.appendChild(item);
+        });
+      } else transcriptBox.innerHTML = '<p class="text-gray-500 italic">No transcript available.</p>';
+
+      const formDataBox = document.getElementById('modal-instant-form-data');
+      const formItems = [['Email', lead.email], ['Requirement', lead.service], ['Language', lead.language]].filter(([,v]) => v);
+      formDataBox.innerHTML = formItems.length ? formItems.map(([label,value]) => `<div class="p-3 rounded-lg bg-voxora-950/70 border border-voxora-border/70"><span class="text-[10px] text-gray-500 block">${label}</span><span class="text-gray-300 mt-1 block">${value}</span></div>`).join('') : '<p class="text-gray-500 italic">No form data available.</p>';
+
+      const modalEl = document.getElementById('lead-details-modal');
+      if (modalEl) modalEl.classList.remove('hidden');
+    }
+
+    function closeLeadDetailsModal() {
+      const modalEl = document.getElementById('lead-details-modal');
+      if (modalEl) modalEl.classList.add('hidden');
+      selectedLeadId = window.selectedLeadId = null;
+    }
+
+    function saveLeadDetailsModal() {
+      if (!selectedLeadId) return;
+      const data = window.leadsData || leadsData || [];
+      const lead = data.find(l => l.id === selectedLeadId);
+      if (lead) {
+        lead.status = document.getElementById('modal-status-select').value;
+        lead.assignedTo = document.getElementById('modal-assignee-select').value;
+        lead.notes = document.getElementById('modal-notes-textarea').value;
+        renderLeadsTable();
+        closeLeadDetailsModal();
+        showToast(`Lead "${lead.name}" updated successfully.`, "success");
+      }
+    }
+
+    function confirmDeleteLead() {
+      if (!selectedLeadId) return;
+      const data = window.leadsData || leadsData || [];
+      const lead = data.find(l => l.id === selectedLeadId);
+      const name = lead ? lead.name : "Lead";
+      leadsData = window.leadsData = data.filter(l => l.id !== selectedLeadId);
+      closeLeadDetailsModal();
+      renderLeadsTable();
+      showToast(`Lead "${name}" was removed.`, "warning");
+    }
+
+    function triggerImmediateManualCall() {
+      if (!selectedLeadId) return;
+      const data = window.leadsData || leadsData || [];
+      const lead = data.find(l => l.id === selectedLeadId);
+      if (!lead) return;
+      showToast(`Initiating immediate SIP voice bridge to ${lead.phone}...`, "info");
+      setTimeout(() => {
+        lead.responseStatus = "Live Call Active";
+        lead.status = "Contacted";
+        renderLeadsTable();
+        openLeadDetailsModal(selectedLeadId);
+        showToast(`AI connected to ${lead.name}. Telemetry streaming.`, "success");
+      }, 1000);
+    }
+
+    function quickCallLead(id) {
+      const data = window.leadsData || leadsData || [];
+      const lead = data.find(l => l.id === id);
+      if (lead) {
+        showToast(`Placing sub-15s AI callback to ${lead.name} (${lead.phone})...`, 'info');
+        setTimeout(() => {
+          lead.status = "Contacted";
+          lead.responseStatus = "Answered & Qualified";
+          renderLeadsTable();
+          showToast(`Call connected with ${lead.name}.`, 'success');
+        }, 800);
+      }
+    }
+
+    function toggleAudioPreview(btn) {
+      showToast("Audio playback stream activated.", "info");
+    }
+
+    function openAddClientModal() {
+      const modal = document.getElementById('add-client-modal');
+      if (modal) modal.classList.remove('hidden');
+      const firstField = document.getElementById('add-client-company');
+      if (firstField) setTimeout(() => firstField.focus(), 50);
+    }
+
+    function closeAddClientModal() {
+      const modal = document.getElementById('add-client-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    async function createMockClient(event) {
+      event.preventDefault();
+      const company  = document.getElementById('add-client-company').value.trim();
+      const agentId  = document.getElementById('add-client-agent-id').value.trim();
+      const numberId = document.getElementById('add-client-number-id').value.trim();
+      const sourceEl = document.getElementById('add-client-source');
+      const source   = sourceEl && sourceEl.value ? sourceEl.value : 'Website Form';
+      if (!company || !agentId || !numberId) {
+        showToast('Client Name, Agent ID, and From Number ID are required.', 'warning');
+        return;
+      }
+
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const origLabel = submitBtn ? submitBtn.textContent : 'Create Client';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Creating...'; }
+
+      try {
+        const response = await fetch('/api/instant-clients', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            client_name:    company,
+            agent_id:       agentId,
+            from_number_id: numberId,
+            source:         source
+          })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.success || !result.client) {
+          throw new Error(
+            result.details
+              ? `${result.error || 'Unable to create client.'}\n\nDetails: ${result.details}`
+              : result.error || 'Unable to create client.'
+          );
+        }
+
+        // Use the REAL Supabase UUID and values returned by the API.
+        const row = result.client;
+        const id  = String(row.id);
+        const clients = (window.clientsData || clientsData);
+        const name = row.client_name ?? row.name ?? company;
+        clients[id] = {
+          id,
+          name,
+          domain: '—',
+          avatarText: name.split(/\s+/).map(p => p[0]).join('').slice(0, 2).toUpperCase(),
+          omniAgentId:       String(row.agent_id ?? agentId),
+          omniNumberId:      String(row.from_number_id ?? numberId),
+          source:            row.source ?? source,
+          integrationToken:  row.integration_token ?? null,
+          instantLeadStatus: 'Active',
+          inquiries: '0', inquiriesTrend: 'New client',
+          callsThisMonth: '0', callsTrend: 'No calls yet',
+          voiceHours: '0.0 hrs', latency: 'Latency: —',
+          convertedRate: '0%', fastestLead: 'Fastest: —',
+          calls: []
+        };
+        writeClientOverlay(id, { source: clients[id].source, instantLeadStatus: 'Active' });
+        updateClientCounts();
+        renderClientsTable();
+        closeAddClientModal();
+        event.target.reset();
+        showToast(`Client "${name}" created successfully.`, 'success');
+      } catch (err) {
+        showToast(err.message || 'Unable to create client.', 'warning');
+      } finally {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = origLabel; }
+      }
+    }
+
+    function openEditClientModal() {
+      if (!activeClientId) return;
+      const client = (window.clientsData || clientsData)[activeClientId];
+      if (!client) return;
+
+      document.getElementById('edit-client-name').value = client.name || '';
+      document.getElementById('edit-client-agent-id').value = client.omniAgentId || '';
+      document.getElementById('edit-client-number-id').value = client.omniNumberId || '';
+      const editSourceEl = document.getElementById('edit-client-source');
+      if (editSourceEl) editSourceEl.value = client.source || 'Website Form';
+      document.getElementById('edit-client-modal').classList.remove('hidden');
+    }
+
+    function closeEditClientModal() {
+      const modal = document.getElementById('edit-client-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    async function saveEditedClient(event) {
+      event.preventDefault();
+      if (!activeClientId) return;
+
+      const clients = (window.clientsData || clientsData);
+      const client = clients[activeClientId];
+      if (!client) return;
+
+      const name = document.getElementById('edit-client-name').value.trim();
+      const agentIdRaw = document.getElementById('edit-client-agent-id').value.trim();
+      const numberIdRaw = document.getElementById('edit-client-number-id').value.trim();
+      const sourceEl = document.getElementById('edit-client-source');
+      const source = sourceEl ? sourceEl.value : (client.source || 'Website Form');
+      if (!name || !agentIdRaw || !numberIdRaw) {
+        showToast('Client Name, Agent ID, and From Number ID are required.', 'warning');
+        return;
+      }
+
+      const saveButton = event.target.querySelector('button[type="submit"]');
+      const originalText = saveButton ? saveButton.textContent : 'Save Changes';
+      if (saveButton) { saveButton.disabled = true; saveButton.textContent = 'Saving...'; }
+
+      try {
+        const response = await fetch(`/api/instant-clients/${encodeURIComponent(activeClientId)}`, {
+          method: 'PUT',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            client_name: name,
+            agent_id: agentIdRaw,
+            from_number_id: numberIdRaw,
+            source: source
+          })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.success || !result.client) {
+  console.error('CLIENT UPDATE FAILED:', result);
+
+  throw new Error(
+    result.details
+      ? `${result.error || 'Unable to save client changes.'}\n\nDetails: ${result.details}`
+      : result.error || 'Unable to save client changes.'
+  );
+}
+
+        const updated = result.client;
+        client.name = updated.client_name ?? updated.name ?? name;
+        client.omniAgentId = String(updated.agent_id ?? updated.omnidimension_agent_id ?? agentIdRaw);
+        client.omniNumberId = String(updated.from_number_id ?? updated.omnidimension_from_number_id ?? numberIdRaw);
+        client.source = updated.source ?? source;
+        // Keep overlay in sync (source now persisted in DB, but overlay as fallback)
+        writeClientOverlay(activeClientId, { source: client.source });
+        client.avatarText = client.name.split(/\s+/).map(p => p[0]).join('').slice(0, 2).toUpperCase();
+
+        renderClientsTable();
+        openClientDetails(activeClientId);
+        closeEditClientModal();
+        showToast(`Client "${client.name}" updated successfully.`, 'success');
+      } catch (error) {
+        showToast(error.message || 'Unable to save client changes.', 'warning');
+      } finally {
+        if (saveButton) { saveButton.disabled = false; saveButton.textContent = originalText; }
+      }
+    }
+
+    function refreshData() {
+      const icon = document.getElementById('refresh-icon');
+      if (icon) icon.classList.add('animate-spin');
+      setTimeout(() => {
+        if (icon) icon.classList.remove('animate-spin');
+        renderLeadsTable();
+        showToast("Instant Lead live telemetry synced.", "success");
+      }, 400);
+    }
+
+    function copyWebhookUrl() {
+      const input = document.createElement("input");
+      input.value = "https://api.voxora.ai/v1/webhooks/instant-lead";
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      document.body.removeChild(input);
+      showToast("Webhook URL copied to clipboard.", "success");
+    }
+
+    function viewCallDetails(callId) {
+      let found = null;
+      Object.values(clientsData).some(client => {
+        const call = (client.calls || []).find(c => c.id === callId);
+        if (call) { found = { call, client }; return true; }
+        return false;
+      });
+      if (!found) { showToast(`Call ${callId} was not found.`, 'warning'); return; }
+
+      const { call, client } = found;
+      document.getElementById('call-modal-title').textContent = `${call.contactName} · Call Details`;
+      document.getElementById('call-modal-subtitle').textContent = `${call.id} · ${client.name}`;
+      document.getElementById('call-modal-customer').textContent = call.contactName;
+      document.getElementById('call-modal-status').textContent = call.status || 'Completed';
+      document.getElementById('call-modal-duration').textContent = call.duration;
+      document.getElementById('call-modal-outcome').textContent = call.sentiment || 'Completed';
+      document.getElementById('call-modal-phone').textContent = call.phone;
+      document.getElementById('call-modal-time').textContent = call.dateTime;
+      document.getElementById('call-modal-trigger').textContent = call.triggerType || 'Instant Lead';
+      document.getElementById('call-modal-sentiment').textContent = call.sentiment || '—';
+
+      const transcript = document.getElementById('call-modal-transcript');
+      transcript.innerHTML = `<div class="p-3 rounded-lg bg-purple-950/40 border border-purple-500/20 text-purple-200">
+        <span class="text-[10px] uppercase tracking-wider text-purple-400 font-bold block">Voxora AI</span>
+        <p class="mt-1">Instant Lead callback completed for ${call.contactName}. This is mock transcript content for UI validation.</p>
+      </div>`;
+      document.getElementById('call-details-modal').classList.remove('hidden');
+    }
+
+    function closeCallDetailsModal() {
+      const modal = document.getElementById('call-details-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      
+      let borderClass = 'border-purple-500/50 text-purple-200';
+      let iconSvg = `<svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+
+      if (type === 'success') {
+        borderClass = 'border-emerald-500/50 text-emerald-200';
+        iconSvg = `<svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
+      } else if (type === 'warning') {
+        borderClass = 'border-rose-500/50 text-rose-200';
+        iconSvg = `<svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+      }
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl bg-voxora-900/95 border ${borderClass} shadow-2xl backdrop-blur-md text-xs font-medium transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.innerHTML = `${iconSvg} <span>${message}</span>`;
+
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => {
+          if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 300);
+      }, 3500);
+    }
+
+    // LOGIN
+    async function handleLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const error = document.getElementById('login-error');
+      if (!email || !password) {
+        if (error) error.classList.remove('hidden');
+        return;
+      }
+      if (error) error.classList.add('hidden');
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.success) throw new Error(result.error || 'Unable to sign in.');
+
+        const loginScreen = document.getElementById('login-screen');
+        const app = document.getElementById('crm-app');
+        if (loginScreen) loginScreen.classList.add('hidden');
+        if (app) app.classList.remove('hidden');
+        sessionStorage.setItem('voxora_logged_in', '1');
+        await loadClientsFromApi();
+      } catch (errorValue) {
+        if (error) { error.textContent = errorValue.message || 'Unable to sign in.'; error.classList.remove('hidden'); }
+      }
+    }
+
+    async function loadClientsFromApi() {
+      try {
+        const response = await fetch('/api/instant-clients', { credentials: 'include' });
+        if (!response.ok) return;
+        const result = await response.json();
+        if (!result.success || !Array.isArray(result.clients)) return;
+
+        const existing = window.clientsData || clientsData || {};
+        const next = {};
+        result.clients.forEach(row => {
+          const id = String(row.id ?? row.client_id ?? '').trim();
+          if (!id) return;
+          const previous = existing[id] || {};
+          // client_name from the backend is the single source of truth for the name.
+          const name = row.client_name ?? row.name ?? previous.name ?? 'Client';
+          // Status and source: prefer DB row, fall back to local overlay for status
+          // (which the backend doesn't persist yet via is_active on toggle).
+          const overlay = getClientOverlay(id);
+          next[id] = {
+            ...previous,
+            ...row,
+            id,
+            name,
+            avatarText: name.split(/\s+/).map(p => p[0]).join('').slice(0, 2).toUpperCase(),
+            omniAgentId:  String(row.agent_id ?? row.omnidimension_agent_id ?? previous.omniAgentId ?? ''),
+            omniNumberId: String(row.from_number_id ?? row.omnidimension_from_number_id ?? previous.omniNumberId ?? ''),
+            source:           overlay.source ?? row.source ?? previous.source ?? 'Website Form',
+            integrationToken: row.integration_token ?? previous.integrationToken ?? null,
+            instantLeadStatus: overlay.instantLeadStatus
+              ?? normalizeInstantLeadStatus(row, previous.instantLeadStatus),
+            calls: previous.calls || []
+          };
+        });
+        // Note: an empty result is applied too, so deleting the last client
+        // does not leave a stale row visible after refresh.
+        if (Object.keys(next).length || result.clients.length === 0) {
+          window.clientsData = next;
+          clientsData = next;
+          updateClientCounts();
+          renderClientsTable();
+          renderRecentCalls();
+        }
+      } catch (_) {
+        // Keep the existing UI state if the optional initial data load fails.
+      }
+    }
+
+    function toggleLoginPassword() {
+      const input = document.getElementById('login-password');
+      const button = input ? input.parentElement.querySelector('button') : null;
+      if (!input) return;
+      const showing = input.type === 'text';
+      input.type = showing ? 'password' : 'text';
+      if (button) button.textContent = showing ? 'Show' : 'Hide';
+    }
+
+    async function signOut() {
+      try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }); } catch (_) {}
+      sessionStorage.removeItem('voxora_logged_in');
+      const loginScreen = document.getElementById('login-screen');
+      const app = document.getElementById('crm-app');
+      if (app) app.classList.add('hidden');
+      if (loginScreen) loginScreen.classList.remove('hidden');
+      const password = document.getElementById('login-password');
+      if (password) password.value = '';
+    }
+
+    function getClientIntegrationUrl(client) {
+      const token = client && client.integrationToken
+        ? client.integrationToken
+        : ('il_' + String(client?.id || 'client').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 10));
+      return `https://api.voxoraai.com/instant-lead/${token}`;
+    }
+
+    function renderClientsTable() {
+      const tbody = document.getElementById('clients-table-body');
+      if (!tbody) return;
+      const clients = Object.values(window.clientsData || clientsData || {});
+      tbody.innerHTML = clients.map(client => {
+        const isPaused = client.instantLeadStatus === 'Paused';
+        const statusHtml = isPaused
+          ? '<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Paused</span>'
+          : '<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active</span>';
+        return `<tr data-client-row onclick="openClientDetails('${client.id}')" class="hover:bg-voxora-900/60 transition-colors cursor-pointer group">
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-800 to-indigo-700 flex items-center justify-center text-white font-bold text-xs group-hover:scale-105 transition-transform">${client.avatarText || 'CL'}</div>
+              <span class="text-white font-semibold group-hover:text-purple-300 transition-colors">${client.name}</span>
+            </div>
+          </td>
+          <td class="py-3.5 px-4 text-purple-300 font-mono text-[11px] whitespace-nowrap">${client.omniAgentId || '—'}</td>
+          <td class="py-3.5 px-4 text-purple-300 font-mono text-[11px] whitespace-nowrap">${client.omniNumberId || '—'}</td>
+          <td class="py-3.5 px-4 text-right">${statusHtml}</td>
+          <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <button onclick="event.stopPropagation(); deleteClientById('${client.id}')" class="px-2.5 py-1 rounded-lg text-[10px] font-semibold text-rose-300 border border-rose-500/40 bg-rose-500/10 hover:bg-rose-500/20 hover:text-rose-200 transition-colors">Delete</button>
+          </td>
+        </tr>`;
+      }).join('');
+      const footer = document.getElementById('clients-footer-count');
+      if (footer) footer.textContent = `Showing ${clients.length} active client accounts`;
+    }
+
+    function copyClientIntegrationUrl() {
+      if (!activeClientId) return;
+      const client = (window.clientsData || clientsData)[activeClientId];
+      if (!client) return;
+      const url = getClientIntegrationUrl(client);
+      const input = document.getElementById('cd-integration-url');
+      if (input) input.value = url;
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(() => showToast('Instant Lead integration URL copied.', 'success')).catch(() => showToast('Unable to copy URL.', 'warning'));
+      } else {
+        const temp = document.createElement('input');
+        temp.value = url; document.body.appendChild(temp); temp.select(); document.execCommand('copy'); document.body.removeChild(temp);
+        showToast('Instant Lead integration URL copied.', 'success');
+      }
+    }
+
+    function filterClients(value) {
+      const q = (value || '').toLowerCase().trim();
+      document.querySelectorAll('[data-client-row]').forEach(row => {
+        row.style.display = !q || row.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    function filterCalls(value) {
+      window.callsSearchQuery = (value || '').toLowerCase().trim();
+      renderRecentCalls();
+    }
+
+    function filterOverviewCalls(value) {
+      const q = (value || '').toLowerCase().trim();
+      document.querySelectorAll('[data-overview-call]').forEach(row => {
+        row.style.display = !q || row.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    function filterClientDetailCalls(value) {
+      const q = (value || '').toLowerCase().trim();
+      document.querySelectorAll('[data-client-detail-call]').forEach(row => {
+        row.style.display = !q || row.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    // Applies the saved status/source overlay to whatever clients are already
+    // in memory at startup, so Paused survives a full page refresh even before
+    // the API load resolves.
+    function applyOverlayToLoadedClients() {
+      const clients = window.clientsData || clientsData || {};
+      const all = readClientOverlay();
+      Object.keys(clients).forEach(id => {
+        const saved = all[id];
+        if (!saved) return;
+        if (saved.instantLeadStatus) clients[id].instantLeadStatus = saved.instantLeadStatus;
+        if (saved.source) clients[id].source = saved.source;
+      });
+    }
+
+    // INITIAL LOAD
+    window.onload = function() {
+      applyOverlayToLoadedClients();
+      const loggedIn = sessionStorage.getItem('voxora_logged_in') === '1';
+      const loginScreen = document.getElementById('login-screen');
+      const app = document.getElementById('crm-app');
+      if (loggedIn) {
+        if (loginScreen) loginScreen.classList.add('hidden');
+        if (app) app.classList.remove('hidden');
+        loadClientsFromApi();
+      } else {
+        if (loginScreen) loginScreen.classList.remove('hidden');
+        if (app) app.classList.add('hidden');
+      }
+      loadInstantLeads();
+      recalculateStats();
+      updateClientCounts();
+      renderClientsTable();
+      renderRecentCalls();
+    };
+  </script>
+</body>
+</html>

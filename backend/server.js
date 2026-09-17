@@ -9,7 +9,7 @@ const { createClient } = require('@supabase/supabase-js');
 const app = express();
 const port = Number(process.env.PORT || 3001);
 const frontendOrigin =
-  process.env.FRONTEND_ORIGIN || https://voxora-instant-leads.vercel.app';
+  process.env.FRONTEND_ORIGIN || 'https://voxora-instant-leads.vercel.app';
 
 const required = [
   'SUPABASE_URL',
